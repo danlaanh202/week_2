@@ -1,24 +1,35 @@
-import logo from "./logo.svg";
+import { AppProvider } from "@shopify/polaris";
+import React from "react";
 
-function App() {
+import AppLayout from "./layout/AppLayout";
+import MainContainer from "./components/primary/MainContainer";
+import { TodoProvider } from "./contexts/TodoContext";
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <TodoProvider>
+      <AppProvider
+        i18n={{
+          Polaris: {
+            ResourceList: {
+              sortingLabel: "Sort by",
+              defaultItemSingular: "item",
+              defaultItemPlural: "items",
+              showing: "Showing {itemsCount} {resource}",
+              Item: {
+                viewItem: "View details for {itemName}",
+              },
+            },
+            Common: {
+              checkbox: "checkbox",
+            },
+          },
+        }}
+      >
+        <AppLayout>
+          <MainContainer />
+        </AppLayout>
+      </AppProvider>
+    </TodoProvider>
   );
 }
-
-export default App;
