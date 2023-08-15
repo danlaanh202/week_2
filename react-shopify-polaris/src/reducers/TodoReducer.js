@@ -16,9 +16,10 @@ const TodoReducer = (state, action) => {
       return tempTodos;
 
     case "TOGGLE_TODO":
+      const isCompleted = !tempTodos[action.payload.index].isCompleted;
       tempTodos[action.payload.index] = {
         ...tempTodos[action.payload.index],
-        isCompleted: !tempTodos[action.payload.index].isCompleted,
+        isCompleted,
       };
       return tempTodos;
 

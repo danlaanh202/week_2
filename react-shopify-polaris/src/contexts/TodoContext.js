@@ -24,6 +24,7 @@ export const TodoProvider = ({ children }) => {
     });
   };
   const removeTodoMultiple = (ids) => {
+    console.log(ids);
     dispatch({
       type: "REMOVE_TODO_MULTIPLE",
       payload: {
@@ -51,9 +52,9 @@ export const TodoProvider = ({ children }) => {
     todos: state,
     addTodo,
     removeTodo,
+    removeTodoMultiple,
     toggleTodo,
     toggleTodoMultiple,
-    removeTodoMultiple,
   };
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;
 };
