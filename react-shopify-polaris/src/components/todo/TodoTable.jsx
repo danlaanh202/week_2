@@ -6,10 +6,10 @@ import {
   ButtonGroup,
 } from "@shopify/polaris";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TodoItem from "./TodoItem";
 import useTodo from "../../hooks/useTodo";
-import CreateTodoModal from "../CreateTodoModal";
+import CreateTodoModal from "../modal/CreateTodoModal";
 
 export default function TodoTable() {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -19,11 +19,12 @@ export default function TodoTable() {
     plural: "todoes",
   };
 
-  const { todos, removeTodoMultiple, toggleTodoMultiple } = useTodo();
+  const { todos, removeTodoMultiple, toggleTodoMultiple, deleteAll } =
+    useTodo();
   const emptyStateMarkup = !todos.length ? (
     <EmptyState
       heading="Create todo to get started"
-      action={<CreateTodoModal />}
+      action={{ content: <CreateTodoModal /> }}
       image="https://cdn.shopify.com/s/files/1/2376/3301/products/emptystate-files.png"
     >
       <p>Empty todo!!</p>
@@ -35,7 +36,9 @@ export default function TodoTable() {
       <ResourceList
         filterControl={
           <ButtonGroup>
-            <Button destructive>Delete all</Button>
+            <Button onClick={deleteAll} destructive>
+              Delete all
+            </Button>
             <Button
               onClick={() => removeTodoMultiple(selectedItems)}
               destructive

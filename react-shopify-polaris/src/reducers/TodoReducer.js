@@ -1,39 +1,40 @@
+import getIndexOfTodo from "../utils/getIndexOfTodo";
+import { v4 as uuidv4 } from "uuid";
 const TodoReducer = (state, action) => {
   const tempTodos = [...state];
   switch (action.type) {
     case "CREATE_TODO":
       return [
-        ...state,
         {
           text: action.payload.text.trim(),
           isCompleted: false,
-          index: `${tempTodos.length}`,
+          id: uuidv4(),
         },
+        ...state,
       ];
 
     case "REMOVE_TODO":
-      tempTodos.splice(action.payload.index, 1);
+      tempTodos.splice(getIndexOfTodo(tempTodos, action.payload.id), 1);
       return tempTodos;
 
     case "TOGGLE_TODO":
-      const isCompleted = !tempTodos[action.payload.index].isCompleted;
-      tempTodos[action.payload.index] = {
-        ...tempTodos[action.payload.index],
-        isCompleted,
-      };
+      const index = getIndexOfTodo(tempTodos, action.payload.id);
+      tempTodos[index].isCompleted = !tempTodos[index].isCompleted;
       return tempTodos;
 
     case "REMOVE_TODO_MULTIPLE":
-      for (var i = action.payload.ids.length - 1; i >= 0; i--)
-        tempTodos.splice(action.payload.ids[i], 1);
+      for (let i = action.payload.ids.length - 1; i >= 0; i--)
+        tempTodos.splice(getIndexOfTodo(tempTodos, action.payload.ids[i]), 1);
       return tempTodos;
     case "TOGGLE_TODO_MULTIPLE":
-      for (var i = action.payload.ids.length - 1; i >= 0; i--) {
-        tempTodos[action.payload.ids[i]] = {
-          ...tempTodos[action.payload.ids[i]],
-          isCompleted: !tempTodos[action.payload.ids[i]].isCompleted,
-        };
+      for (let i = action.payload.ids.length - 1; i >= 0; i--) {
+        const index = getIndexOfTodo(tempTodos, action.payload.ids[i]);
+        tempTodos[index].isCompleted = !tempTodos[index]?.isCompleted;
+        tempTodos[index].id = uuidv4();
       }
+      return tempTodos;
+    case "REMOVE_TODO_ALL":
+      return [];
     default:
       return state;
   }

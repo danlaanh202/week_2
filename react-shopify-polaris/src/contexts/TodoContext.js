@@ -15,16 +15,15 @@ export const TodoProvider = ({ children }) => {
       },
     });
   };
-  const removeTodo = (index) => {
+  const removeTodo = (id) => {
     dispatch({
       type: "REMOVE_TODO",
       payload: {
-        index,
+        id,
       },
     });
   };
   const removeTodoMultiple = (ids) => {
-    console.log(ids);
     dispatch({
       type: "REMOVE_TODO_MULTIPLE",
       payload: {
@@ -32,11 +31,11 @@ export const TodoProvider = ({ children }) => {
       },
     });
   };
-  const toggleTodo = (index) => {
+  const toggleTodo = (id) => {
     dispatch({
       type: "TOGGLE_TODO",
       payload: {
-        index,
+        id,
       },
     });
   };
@@ -48,6 +47,11 @@ export const TodoProvider = ({ children }) => {
       },
     });
   };
+  const deleteAll = () => {
+    dispatch({
+      type: "REMOVE_TODO_ALL",
+    });
+  };
   const value = {
     todos: state,
     addTodo,
@@ -55,6 +59,7 @@ export const TodoProvider = ({ children }) => {
     removeTodoMultiple,
     toggleTodo,
     toggleTodoMultiple,
+    deleteAll,
   };
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;
 };

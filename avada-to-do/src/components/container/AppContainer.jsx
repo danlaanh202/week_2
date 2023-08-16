@@ -1,7 +1,7 @@
 import React from "react";
-import Todo from "../components/todo/Todo";
-import TodoForm from "../components/todo/TodoForm";
-import useTodo from "../hooks/useTodo";
+import Todo from "../todo/Todo";
+import TodoForm from "../todo/TodoForm";
+import useTodo from "../../hooks/useTodo";
 
 const App = () => {
   const { todos } = useTodo();
