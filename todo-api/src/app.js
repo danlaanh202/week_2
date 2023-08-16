@@ -1,8 +1,9 @@
-import Koa from 'koa';
-import koaBody from 'koa-body';
-import routes from './routes/routes.js';
-
+import Koa from "koa";
+import koaBody from "koa-body";
+import routes from "./routes/routes.js";
+import cors from "@koa/cors";
 const app = new Koa();
+app.use(cors());
 
 app.use(koaBody());
 app.use(routes.routes());

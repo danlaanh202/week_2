@@ -21,8 +21,8 @@ export function createTodo(data) {
 
 export function removeTodo(id) {
   const tempTodoes = [...todoes];
-  const result = tempTodoes.filter((item) => item.id !== parseInt(id));
-  console.log(result);
+  const result = tempTodoes.filter((item) => item.id !== id);
+
   saveTodo(result);
 }
 

@@ -1,13 +1,12 @@
-import React from "react";
-import useTodo from "../../hooks/useTodo";
+import { useState } from "react";
 
-const TodoForm = () => {
-  const [value, setValue] = React.useState("");
-  const { addTodo } = useTodo();
+const TodoForm = ({ createTodo }) => {
+  const [value, setValue] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!value) return;
-    addTodo(value);
+    createTodo(value);
     setValue("");
   };
   return (

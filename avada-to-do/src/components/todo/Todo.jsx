@@ -1,23 +1,19 @@
-import React, { useContext } from "react";
+import React from "react";
 
-import useTodo from "../../hooks/useTodo";
-
-const Todo = ({ todo, index }) => {
-  const { removeTodo, toggleTodo } = useTodo();
-
+const Todo = ({ todo, todoId, deleteTodo, toggleTodo }) => {
   return (
     <div className="todo">
       <div
         className="todo-text"
-        style={{ textDecoration: todo.isCompleted ? "line-through" : "" }}
+        style={{ textDecoration: todo?.isCompleted ? "line-through" : "" }}
       >
-        {todo.text}
+        {todo?.text}
       </div>
       <div className="btn-container">
-        <button onClick={() => toggleTodo(index)}>
-          {todo.isCompleted ? "Uncomplete" : "Complete"}
+        <button onClick={() => toggleTodo(todoId)}>
+          {todo?.isCompleted ? "Uncomplete" : "Complete"}
         </button>
-        <button style={{ color: "red" }} onClick={() => removeTodo(index)}>
+        <button style={{ color: "red" }} onClick={() => deleteTodo(todoId)}>
           X
         </button>
       </div>

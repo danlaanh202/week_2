@@ -13,6 +13,7 @@ export async function getTodoes(ctx) {
     ctx.status = 200;
     return (ctx.body = {
       data: todoes,
+      success: true,
     });
   } catch (e) {
     ctx.status = 404;
@@ -27,7 +28,7 @@ export async function getTodoes(ctx) {
 export async function createTd(ctx) {
   try {
     const data = ctx.request.body;
-    createTodo({ ...data });
+    createTodo(data);
 
     ctx.status = 201;
     return (ctx.body = {
@@ -46,7 +47,7 @@ export function remove(ctx) {
   try {
     const { id } = ctx.params;
     removeTodo(id);
-    ctx.status = 204;
+    ctx.status = 200;
     return (ctx.body = {
       success: true,
     });
