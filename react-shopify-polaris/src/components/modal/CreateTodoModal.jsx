@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import useTodo from "../../hooks/useTodo";
 import {
   Button,
   Modal,
@@ -8,16 +7,16 @@ import {
   TextStyle,
 } from "@shopify/polaris";
 
-const CreateTodoModal = () => {
-  const { addTodo } = useTodo();
+const CreateTodoModal = ({ createTodo }) => {
   const [showModal, setShowModal] = useState(false);
   const [inputVal, setInputVal] = useState("");
+
   const toggleModal = useCallback(() => setShowModal((prev) => !prev), []);
   const handleChange = useCallback((newValue) => setInputVal(newValue), []);
-  const createTodo = () => {
-    addTodo(inputVal);
-    toggleModal();
+  const create = () => {
+    createTodo(inputVal);
     setInputVal("");
+    toggleModal();
   };
   return (
     <Modal
@@ -26,7 +25,7 @@ const CreateTodoModal = () => {
       title={<TextStyle variation="strong">Create a new todo</TextStyle>}
       primaryAction={{
         content: "Create",
-        onAction: createTodo,
+        onAction: create,
       }}
       secondaryActions={[
         {

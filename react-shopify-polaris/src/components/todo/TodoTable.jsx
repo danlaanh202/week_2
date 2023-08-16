@@ -5,13 +5,19 @@ import {
   Button,
   ButtonGroup,
 } from "@shopify/polaris";
-
 import { useState } from "react";
 import TodoItem from "./TodoItem";
-import useTodo from "../../hooks/useTodo";
 import CreateTodoModal from "../modal/CreateTodoModal";
 
-export default function TodoTable() {
+export default function TodoTable({
+  todoes,
+  toggleTodo,
+  removeTodo,
+  createTodo,
+}) {
+  const removeTodoMultiple = () => {};
+  const toggleTodoMultiple = () => {};
+
   const [selectedItems, setSelectedItems] = useState([]);
 
   const resourceName = {
@@ -19,12 +25,10 @@ export default function TodoTable() {
     plural: "todoes",
   };
 
-  const { todos, removeTodoMultiple, toggleTodoMultiple, deleteAll } =
-    useTodo();
-  const emptyStateMarkup = !todos.length ? (
+  const emptyStateMarkup = !todoes.length ? (
     <EmptyState
       heading="Create todo to get started"
-      action={{ content: <CreateTodoModal /> }}
+      action={{ content: <CreateTodoModal createTodo={createTodo} /> }}
       image="https://cdn.shopify.com/s/files/1/2376/3301/products/emptystate-files.png"
     >
       <p>Empty todo!!</p>
@@ -36,9 +40,6 @@ export default function TodoTable() {
       <ResourceList
         filterControl={
           <ButtonGroup>
-            <Button onClick={deleteAll} destructive>
-              Delete all
-            </Button>
             <Button
               onClick={() => removeTodoMultiple(selectedItems)}
               destructive
@@ -51,8 +52,16 @@ export default function TodoTable() {
           </ButtonGroup>
         }
         resourceName={resourceName}
-        items={todos}
-        renderItem={TodoItem}
+        items={todoes}
+        renderItem={(item) => {
+          return (
+            <TodoItem
+              todo={item}
+              toggleTodo={toggleTodo}
+              removeTodo={removeTodo}
+            />
+          );
+        }}
         selectedItems={selectedItems}
         onSelectionChange={setSelectedItems}
         emptyState={emptyStateMarkup}

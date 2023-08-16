@@ -56,3 +56,7 @@ export function toggleMultipleTodoes(ids) {
   }
   saveTodo(tempTodoes);
 }
+
+export function removeTodoes() {
+  saveTodo([]);
+}

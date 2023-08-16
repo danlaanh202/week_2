@@ -1,23 +1,22 @@
 import { Button, ResourceItem, Tag, TextStyle } from "@shopify/polaris";
 import React from "react";
-import useTodo from "../../hooks/useTodo";
 
-const TodoItem = (item) => {
-  const { toggleTodo, removeTodo } = useTodo();
-  const { text, id } = item;
+const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
+  // const toggleTodo = (id) => {};
+  // const removeTodo = (id) => {};
   return (
-    <ResourceItem id={id}>
+    <ResourceItem id={todo.id}>
       <div style={{ display: "flex", gap: "12px" }}>
         <div style={{ flex: "1", display: "flex", alignItems: "center" }}>
           <TextStyle variant="bodyMd" fontWeight="bold" as="h3">
-            {text}
+            {todo.text}
           </TextStyle>
         </div>
-        <Tag>{item.isCompleted ? "Done" : "Pending"}</Tag>
-        <Button primary onClick={() => toggleTodo(id)}>
+        <Tag>{todo.isCompleted ? "Done" : "Pending"}</Tag>
+        <Button primary onClick={() => toggleTodo(todo.id)}>
           Toggle complete
         </Button>
-        <Button destructive onClick={() => removeTodo(id)}>
+        <Button destructive onClick={() => removeTodo(todo.id)}>
           Delete
         </Button>
       </div>

@@ -76,7 +76,7 @@ export function toggle(ctx) {
 }
 export function removeMultiple(ctx) {
   try {
-    const { ids } = ctx.params;
+    const { ids } = ctx.request.body;
     removeMultipleTodoes(ids);
     ctx.status = 204;
     return (ctx.body = {
@@ -91,11 +91,26 @@ export function removeMultiple(ctx) {
 }
 export function toggleMultiple(ctx) {
   try {
-    const { ids } = ctx.params;
+    const { ids } = ctx.request.body;
     toggleMultipleTodoes(ids);
     ctx.status = 201;
     return (ctx.body = {
       success: true,
+    });
+  } catch (error) {
+    return (ctx.body = {
+      success: false,
+      error: error.message,
+    });
+  }
+}
+
+export function removeAll(ctx) {
+  try {
+    ctx.status = 200;
+    return (ctx.body = {
+      success: true,
+      message: "data has been cleared",
     });
   } catch (error) {
     return (ctx.body = {

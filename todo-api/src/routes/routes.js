@@ -12,7 +12,10 @@ const router = new Router({
 router.get("/todoes", todoHandler.getTodoes);
 // router.get("/todoes/:id", bookHandler.getBook);
 router.post("/todoes", todoInputMiddleware, todoHandler.createTd);
-router.delete("/todoes/:id", todoHandler.remove);
 router.put("/todoes/:id", todoHandler.toggle);
+router.delete("/todoes/:id", todoHandler.remove);
+router.delete("/todoes", todoHandler.removeAll);
+router.post("/todoes/multiple_remove", todoHandler.removeMultiple);
+router.put("/todoes/multiple_toggle", todoHandler.toggleMultiple);
 
 export default router;
