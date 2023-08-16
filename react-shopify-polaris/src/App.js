@@ -6,20 +6,13 @@ import MainContainer from "./components/primary/MainContainer";
 export default function App() {
   return (
     <AppProvider
-      i18n={{
-        Polaris: {
-          ResourceList: {
-            sortingLabel: "Sort by",
-            defaultItemSingular: "item",
-            defaultItemPlural: "items",
-            showing: "Showing {itemsCount} {resource}",
-            Item: {
-              viewItem: "View details for {itemName}",
-            },
-          },
-          Common: {
-            checkbox: "checkbox",
-          },
+      theme={{
+        logo: {
+          width: 124,
+          topBarSource: "https://i.imgur.com/LTYRxl7.png",
+          contextualSaveBarSource: "https://i.imgur.com/LTYRxl7.png",
+          url: "#",
+          accessibilityLabel: "Logo",
         },
       }}
     >

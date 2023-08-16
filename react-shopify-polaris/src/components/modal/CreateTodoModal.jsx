@@ -7,7 +7,7 @@ import {
   TextStyle,
 } from "@shopify/polaris";
 
-const CreateTodoModal = ({ createTodo }) => {
+const CreateTodoModal = ({ createTodo, createTodoLoading }) => {
   const [showModal, setShowModal] = useState(false);
   const [inputVal, setInputVal] = useState("");
 
@@ -34,7 +34,7 @@ const CreateTodoModal = ({ createTodo }) => {
         },
       ]}
       activator={
-        <Button onClick={toggleModal} primary>
+        <Button onClick={toggleModal} primary disabled={createTodoLoading}>
           Create todo
         </Button>
       }

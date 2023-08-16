@@ -4,6 +4,7 @@ import {
   EmptyState,
   Button,
   ButtonGroup,
+  Stack,
 } from "@shopify/polaris";
 import { useState } from "react";
 import TodoItem from "./TodoItem";
@@ -14,6 +15,8 @@ export default function TodoTable({
   toggleTodo,
   removeTodo,
   createTodo,
+  fetchLoading,
+  createTodoLoading,
 }) {
   const removeTodoMultiple = () => {};
   const toggleTodoMultiple = () => {};
@@ -28,7 +31,14 @@ export default function TodoTable({
   const emptyStateMarkup = !todoes.length ? (
     <EmptyState
       heading="Create todo to get started"
-      action={{ content: <CreateTodoModal createTodo={createTodo} /> }}
+      action={{
+        content: (
+          <CreateTodoModal
+            createTodo={createTodo}
+            createTodoLoading={createTodoLoading}
+          />
+        ),
+      }}
       image="https://cdn.shopify.com/s/files/1/2376/3301/products/emptystate-files.png"
     >
       <p>Empty todo!!</p>
@@ -39,20 +49,41 @@ export default function TodoTable({
     <Card>
       <ResourceList
         filterControl={
-          <ButtonGroup>
-            <Button
-              onClick={() => removeTodoMultiple(selectedItems)}
-              destructive
-            >
-              Delete selected
-            </Button>
-            <Button onClick={() => toggleTodoMultiple(selectedItems)} primary>
-              Toggle complete
-            </Button>
-          </ButtonGroup>
+          <Stack alignment="center">
+            <Stack.Item fill>
+              {todoes?.length > 0 && (
+                <Button
+                  onClick={() => removeTodoMultiple(selectedItems)}
+                  destructive
+                >
+                  Delete all
+                </Button>
+              )}
+            </Stack.Item>
+            <Stack.Item>
+              <CreateTodoModal
+                createTodo={createTodo}
+                createTodoLoading={createTodoLoading}
+              />
+            </Stack.Item>
+          </Stack>
         }
         resourceName={resourceName}
         items={todoes}
+        loading={fetchLoading}
+        selectedItems={selectedItems}
+        onSelectionChange={setSelectedItems}
+        emptyState={emptyStateMarkup}
+        promotedBulkActions={[
+          {
+            content: "Complete",
+            action: () => {},
+          },
+          {
+            content: "Delete",
+            action: () => {},
+          },
+        ]}
         renderItem={(item) => {
           return (
             <TodoItem
@@ -62,9 +93,6 @@ export default function TodoTable({
             />
           );
         }}
-        selectedItems={selectedItems}
-        onSelectionChange={setSelectedItems}
-        emptyState={emptyStateMarkup}
         selectable
       />
     </Card>

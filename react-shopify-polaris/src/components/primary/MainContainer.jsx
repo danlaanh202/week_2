@@ -56,6 +56,8 @@ const MainContainer = () => {
       <div className={`${styles["main-container__content"]}`}>
         <MainPage createTodo={createTodo} />
         <TodoTable
+          fetchLoading={getLoading}
+          createTodoLoading={createTodoLoading}
           todoes={todoes}
           toggleTodo={toggleTodo}
           removeTodo={removeTodo}
