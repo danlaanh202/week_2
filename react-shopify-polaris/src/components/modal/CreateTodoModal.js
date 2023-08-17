@@ -7,16 +7,25 @@ import {
   TextStyle,
 } from "@shopify/polaris";
 
-const CreateTodoModal = ({ createTodo, createTodoLoading }) => {
+const CreateTodoModal = ({
+  createTodo,
+  createTodoLoading,
+  isInsideButton = false,
+}) => {
   const [showModal, setShowModal] = useState(false);
   const [inputVal, setInputVal] = useState("");
 
   const toggleModal = useCallback(() => setShowModal((prev) => !prev), []);
   const handleChange = useCallback((newValue) => setInputVal(newValue), []);
-  const create = () => {
-    createTodo(inputVal);
-    setInputVal("");
-    toggleModal();
+  const create = (e) => {
+    e.preventDefault();
+    if (!inputVal) {
+      return;
+    }
+    createTodo(inputVal).then(() => {
+      setInputVal("");
+      toggleModal();
+    });
   };
   return (
     <Modal
@@ -26,6 +35,8 @@ const CreateTodoModal = ({ createTodo, createTodoLoading }) => {
       primaryAction={{
         content: "Create",
         onAction: create,
+        loading: createTodoLoading,
+        disabled: createTodoLoading,
       }}
       secondaryActions={[
         {
@@ -34,19 +45,21 @@ const CreateTodoModal = ({ createTodo, createTodoLoading }) => {
         },
       ]}
       activator={
-        <Button onClick={toggleModal} primary disabled={createTodoLoading}>
+        <Button onClick={toggleModal} primary>
           Create todo
         </Button>
       }
     >
       <Modal.Section>
-        <TextContainer>
-          <TextField
-            value={inputVal}
-            onChange={handleChange}
-            placeholder="Your next todo"
-          ></TextField>
-        </TextContainer>
+        <form onSubmit={create}>
+          <TextContainer>
+            <TextField
+              value={inputVal}
+              onChange={handleChange}
+              placeholder="Your next todo"
+            ></TextField>
+          </TextContainer>
+        </form>
       </Modal.Section>
     </Modal>
   );

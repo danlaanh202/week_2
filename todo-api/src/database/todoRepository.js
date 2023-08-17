@@ -1,9 +1,9 @@
 import fs from "fs";
 const { data: todoes } = require("./todoes.json");
-
+import path from "path";
 function saveTodo(data) {
   fs.writeFileSync(
-    "./lib/database/todoes.json",
+    path.join(__dirname, "/todoes.json"),
     JSON.stringify({
       data,
     })
@@ -37,7 +37,11 @@ export function toggleTodo(id) {
   saveTodo(result);
 }
 export function removeMultipleTodoes(ids) {
-  const tempTodoes = [...todoes];
+  if (!ids || ids?.length === 0) {
+    removeTodoes();
+  }
+  console.log(ids);
+  let tempTodoes = [...todoes];
   for (let i = ids.length - 1; i >= 0; i--) {
     tempTodoes = tempTodoes.filter((item) => item.id !== ids[i]);
   }
@@ -45,15 +49,17 @@ export function removeMultipleTodoes(ids) {
   return tempTodoes;
 }
 export function toggleMultipleTodoes(ids) {
-  const tempTodoes = [...todoes];
-  for (let i = ids.length - 1; i >= 0; i--) {
-    tempTodoes = tempTodoes.map((item) => {
-      if (item.id === ids[i]) {
-        return { ...item, isCompleted: !item.isCompleted };
-      }
-      return item;
-    });
+  if (!ids) {
+    return;
   }
+
+  const tempTodoes = todoes.map((item) => {
+    if (ids.includes(item.id)) {
+      return { ...item, isCompleted: !item.isCompleted };
+    }
+    return item;
+  });
+
   saveTodo(tempTodoes);
 }
 

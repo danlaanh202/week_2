@@ -1,6 +1,4 @@
-import { TopBar, Frame } from "@shopify/polaris";
-import { ArrowLeftMinor } from "@shopify/polaris-icons";
-import { useState, useCallback } from "react";
+import { TopBar } from "@shopify/polaris";
 
 function Topbar() {
   const userMenuMarkup = (

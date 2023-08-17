@@ -5,6 +5,7 @@ import { rootApi } from "../constants";
 const usePost = (url) => {
   const [loading, setLoading] = useState(false);
   const postData = async (text) => {
+    setLoading(true);
     try {
       return await fetch(`${rootApi}${url}`, {
         method: "POST",

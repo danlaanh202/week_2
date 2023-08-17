@@ -1,5 +1,5 @@
 import Router from "koa-router";
-import * as todoHandler from "../handlers/books/todoHandlers";
+import * as todoHandler from "../handlers/todoHandlers";
 import todoInputMiddleware from "../middleware/todoInputMiddleware";
 
 // Prefix all routes with /books
@@ -11,11 +11,10 @@ const router = new Router({
 
 router.get("/todoes", todoHandler.getTodoes);
 // router.get("/todoes/:id", bookHandler.getBook);
-router.post("/todoes", todoInputMiddleware, todoHandler.createTd);
-router.put("/todoes/:id", todoHandler.toggle);
-router.delete("/todoes/:id", todoHandler.remove);
-router.delete("/todoes", todoHandler.removeAll);
-router.post("/todoes/multiple_remove", todoHandler.removeMultiple);
-router.put("/todoes/multiple_toggle", todoHandler.toggleMultiple);
+router.post("/todo", todoInputMiddleware, todoHandler.createTd);
+router.put("/todo/:id", todoHandler.toggle);
+router.put("/todoes", todoHandler.toggleMultiple);
+router.delete("/todo/:id", todoHandler.remove);
+router.delete("/todoes", todoHandler.removeMultiple);
 
 export default router;

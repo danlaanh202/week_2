@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { rootApi } from "../constants";
 
-const useDeleteTodo = (url) => {
+const useDeleteTodo = (firstPath) => {
   const [loading, setLoading] = useState(false);
-  const deleteData = async (id) => {
+  const deleteData = async (secondPath) => {
     setLoading(true);
     try {
-      return await fetch(`${rootApi}${url}/${id}`, {
+      return await fetch(`${rootApi}${firstPath}${secondPath}`, {
         method: "DELETE",
       }).then((resp) => resp.json());
     } catch (error) {

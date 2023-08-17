@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Todo from "../todo/Todo";
 import TodoForm from "../todo/TodoForm";
 import useFetchApi from "../../hooks/useFetchApi";
@@ -7,10 +7,10 @@ import useDeleteTodo from "../../hooks/useDeleteTodo";
 import usePutTodo from "../../hooks/usePutTodo";
 
 const App = () => {
-  const [todoes, setTodoes, loading, fetched] = useFetchApi("/todoes");
-  const { deleteData } = useDeleteTodo("/todoes");
-  const { postData } = usePost("/todoes");
-  const { putData } = usePutTodo("/todoes");
+  const [todoes, setTodoes, loading] = useFetchApi("/todoes");
+  const { deleteData } = useDeleteTodo("/todo");
+  const { postData } = usePost("/todo");
+  const { putData, loading: toggleLoading } = usePutTodo("/todo");
   const createTodo = (text) => {
     postData(text).then(({ data }) => setTodoes((prev) => [data, ...prev]));
   };
@@ -23,9 +23,13 @@ const App = () => {
   };
 
   const toggleTodo = (id) => {
-    putData(id).then(({success}) => {
-      if(success) {
-        setTodoes((prev) => prev.map((item) => item.id === id ? {...item, isCompleted: !item.isCompleted} : item))
+    putData(id).then(({ success }) => {
+      if (success) {
+        setTodoes((prev) =>
+          prev.map((item) =>
+            item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
+          )
+        );
       }
     });
   };
@@ -37,6 +41,7 @@ const App = () => {
             todoId={todo.id}
             key={todo.id}
             todo={todo}
+            setTodoes={setTodoes}
             deleteTodo={deleteTodo}
             toggleTodo={toggleTodo}
           />

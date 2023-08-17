@@ -5,7 +5,7 @@ import {
   removeMultipleTodoes,
   toggleTodo,
   toggleMultipleTodoes,
-} from "../../database/todoRepository";
+} from "../database/todoRepository";
 
 export async function getTodoes(ctx) {
   try {
@@ -43,7 +43,7 @@ export async function createTd(ctx) {
   }
 }
 
-export function remove(ctx) {
+export async function remove(ctx) {
   try {
     const { id } = ctx.params;
     removeTodo(id);
@@ -59,7 +59,7 @@ export function remove(ctx) {
   }
 }
 
-export function toggle(ctx) {
+export async function toggle(ctx) {
   try {
     const { id } = ctx.params;
     toggleTodo(id);
@@ -74,25 +74,14 @@ export function toggle(ctx) {
     });
   }
 }
-export function removeMultiple(ctx) {
+
+export async function toggleMultiple(ctx) {
   try {
-    const { ids } = ctx.request.body;
-    removeMultipleTodoes(ids);
-    ctx.status = 204;
-    return (ctx.body = {
-      success: true,
-    });
-  } catch (error) {
-    return (ctx.body = {
-      success: false,
-      error: error.message,
-    });
-  }
-}
-export function toggleMultiple(ctx) {
-  try {
-    const { ids } = ctx.request.body;
-    toggleMultipleTodoes(ids);
+    const { ids } = ctx.query;
+    console.log(ids);
+    const idsParam = Array.isArray(ids) ? ids : [ids];
+    console.log(idsParam);
+    toggleMultipleTodoes(idsParam);
     ctx.status = 201;
     return (ctx.body = {
       success: true,
@@ -104,13 +93,15 @@ export function toggleMultiple(ctx) {
     });
   }
 }
-
-export function removeAll(ctx) {
+export async function removeMultiple(ctx) {
   try {
+    const { ids } = ctx.query;
+    // console.log(instanceof ids)
+    const idsParam = Array.isArray(ids) ? ids : [ids];
+    removeMultipleTodoes(idsParam);
     ctx.status = 200;
     return (ctx.body = {
       success: true,
-      message: "data has been cleared",
     });
   } catch (error) {
     return (ctx.body = {
