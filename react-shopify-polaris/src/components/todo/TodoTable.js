@@ -28,26 +28,23 @@ export default function TodoTable({
   const removeTodoMultiple = (ids) => {
     deleteMultipleData(arrayToQuery(ids, "ids")).then(({ success }) => {});
   };
-  const toggleTodoMultiple = (ids) => {
-    toggleMultipleData(arrayToQuery(ids, "ids")).then(({ success }) => {
-      if (success) {
-        setTodoes((prev) => {
-          return prev.map((item) => {
-            const temp = { ...item, isCompleted: !item.isCompleted };
-            return ids.includes(item.id) ? temp : item;
-          });
-        });
-      }
-    });
+  const toggleTodoMultiple = async (ids) => {
+    const { success } = await toggleMultipleData(arrayToQuery(ids, "ids"));
+    if (success) {
+      setTodoes((prev) =>
+        prev.map((item) => {
+          return ids.includes(item.id)
+            ? { ...item, isCompleted: !item.isCompleted }
+            : item;
+        })
+      );
+    }
   };
 
   const resourceName = {
     singular: "todo",
     plural: "todoes",
   };
-  useEffect(() => {
-    console.log(todoes);
-  }, [todoes]);
 
   const emptyStateMarkup = !todoes.length ? (
     <EmptyState
@@ -64,10 +61,6 @@ export default function TodoTable({
 
   const filterControlMarkup = (
     <Stack alignment="center">
-      {/* <Stack.Item fill>
-        <TextStyle>Todoes</TextStyle>
-        {todoes?.length > 0 && <Button destructive>Delete all</Button>}
-      </Stack.Item> */}
       <Stack.Item>
         <CreateTodoModal
           createTodo={createTodo}
@@ -90,12 +83,12 @@ export default function TodoTable({
         promotedBulkActions={[
           {
             content: "Complete",
-            loading: multipleToggleLoading,
+
             onAction: () => toggleTodoMultiple(selectedItems),
           },
           {
             content: "Delete",
-            loading: multipleDeleteLoading,
+
             onAction: () => removeTodoMultiple(selectedItems),
           },
         ]}

@@ -7,25 +7,23 @@ import {
   TextStyle,
 } from "@shopify/polaris";
 
-const CreateTodoModal = ({
-  createTodo,
-  createTodoLoading,
-  isInsideButton = false,
-}) => {
+const CreateTodoModal = ({ createTodo, createTodoLoading }) => {
   const [showModal, setShowModal] = useState(false);
   const [inputVal, setInputVal] = useState("");
 
   const toggleModal = useCallback(() => setShowModal((prev) => !prev), []);
   const handleChange = useCallback((newValue) => setInputVal(newValue), []);
-  const create = (e) => {
+  const create = async (e) => {
     e.preventDefault();
     if (!inputVal) {
       return;
     }
-    createTodo(inputVal).then(() => {
-      setInputVal("");
-      toggleModal();
-    });
+    const { success } = await createTodo(inputVal);
+    if (!success) {
+      return;
+    }
+    setInputVal("");
+    toggleModal();
   };
   return (
     <Modal

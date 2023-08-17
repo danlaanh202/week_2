@@ -14,15 +14,16 @@ const MainContainer = () => {
 
   const { postData, loading: createTodoLoading } = usePost("/todo");
   const createTodo = async (text) => {
-    return await postData(text).then(({ data }) =>
+    const { success, data } = await postData(text).then(({ data }) =>
       setTodoes((prev) => [data, ...prev])
     );
+    return success;
   };
 
   return (
     <div className="main-container">
       <div className={`${styles["main-container__content"]}`}>
-        <MainPage createTodo={createTodo} />
+        <MainPage />
         <TodoTable
           fetchLoading={getLoading}
           createTodoLoading={createTodoLoading}

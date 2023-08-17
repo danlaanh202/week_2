@@ -13,29 +13,27 @@ import useDeleteTodo from "../../hooks/useDeleteTodo";
 const TodoItem = ({ todo, setTodoes }) => {
   const { putData } = usePutTodo("/todo");
   const { deleteData, loading: deleteLoading } = useDeleteTodo("/todo");
-  const toggleTodo = (id) => {
-    putData(`/${id}`).then(({ success }) => {
-      if (success) {
-        setTodoes((prev) =>
-          prev.map((item) =>
-            item.id === id
-              ? {
-                  ...item,
-                  isCompleted: !item.isCompleted,
-                }
-              : item
-          )
-        );
-      }
-    });
+  const toggleTodo = async (id) => {
+    const success = await putData(`/${id}`);
+    if (success) {
+      setTodoes((prev) =>
+        prev.map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                isCompleted: !item.isCompleted,
+              }
+            : item
+        )
+      );
+    }
   };
 
-  const removeTodo = (id) => {
-    deleteData(`/${id}`).then(({ success }) => {
-      if (success) {
-        setTodoes((prev) => prev.filter((item) => item.id !== id));
-      }
-    });
+  const removeTodo = async (id) => {
+    const { success } = await deleteData(`/${id}`);
+    if (success) {
+      setTodoes((prev) => prev.filter((item) => item.id !== id));
+    }
   };
 
   return (
