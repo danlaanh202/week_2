@@ -2,11 +2,12 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { rootApi } from "../constants";
 
-const usePost = (url) => {
+const usePost = (path) => {
   const [loading, setLoading] = useState(false);
   const postData = async (text) => {
+    setLoading(true);
     try {
-      return await fetch(`${rootApi}${url}`, {
+      return await fetch(`${rootApi}${path}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

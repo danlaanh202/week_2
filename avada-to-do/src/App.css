@@ -49,3 +49,19 @@
 button {
   padding: 4px 16px;
 }
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spinner {
+  width: 10px;
+  height: 10px;
+  border: 1px solid black;
+  border-right: 1px solid transparent;
+  border-radius: 100%;
+  animation: spin 1s linear infinite;
+}
