@@ -22,29 +22,20 @@ export function createTodo(data) {
 export function removeTodo(id) {
   const tempTodoes = [...todoes];
   const result = tempTodoes.filter((item) => item.id !== id);
-
   saveTodo(result);
 }
 
 export function toggleTodo(id) {
-  const tempTodoes = [...todoes];
-  const result = tempTodoes.map((item, index) => {
-    if (item.id === id) {
-      return { ...item, isCompleted: !item.isCompleted };
-    }
-    return item;
-  });
+  const result = [...todoes].map((item) =>
+    item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
+  );
   saveTodo(result);
 }
 export function removeMultipleTodoes(ids) {
   if (!ids || ids?.length === 0) {
     removeTodoes();
   }
-  console.log(ids);
-  let tempTodoes = [...todoes];
-  for (let i = ids.length - 1; i >= 0; i--) {
-    tempTodoes = tempTodoes.filter((item) => item.id !== ids[i]);
-  }
+  const tempTodoes = [...todoes].filter((item) => !ids.includes(item.id));
   saveTodo(tempTodoes);
   return tempTodoes;
 }
@@ -53,13 +44,9 @@ export function toggleMultipleTodoes(ids) {
     return;
   }
 
-  const tempTodoes = todoes.map((item) => {
-    if (ids.includes(item.id)) {
-      return { ...item, isCompleted: !item.isCompleted };
-    }
-    return item;
-  });
-
+  const tempTodoes = [...todoes].map((item) =>
+    ids.includes(item.id) ? { ...item, isCompleted: !item.isCompleted } : item
+  );
   saveTodo(tempTodoes);
 }
 
