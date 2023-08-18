@@ -20,6 +20,9 @@ const Todo = ({ todo, todoId, setTodoes }) => {
       alert("Can not toggle todo");
     }
   };
+  //todo: mấy chỗ kiểu này thường thì bọn anh kahs là ít viết bằng hook ,
+  // viết hook chỗ này nó khá là không cần thiết mà xong mình cần cần viết thêm 1 hàm deleteTodo 
+  // thay vào đó mình có thể viết 1 hàm tổng quát dạng fetch data thì nó dễ xử lí hơn ở chỗ này mà có thể dùng cả PUT POST ..... . https://imgur.com/qWMPrmc tham khảo nhé . và viết lại chỗ này nhé .
   const { deleteData, loading: deleteLoading } = useDeleteTodo("/todo");
   const deleteTodo = async (id) => {
     try {

@@ -19,6 +19,7 @@ const TodoForm = ({ setTodoes }) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    // todo: thông báo lỗi nhé
     if (!value) return;
     createTodo(value);
   };
