@@ -6,7 +6,12 @@ export default function () {
   const toggleActive = useCallback(() => toggleToast(), []);
 
   const toastMarkup = toastState.activeToast ? (
-    <Toast content={toastState.content} error onDismiss={toggleActive} />
+    <Toast
+      content={toastState.content}
+      error
+      onDismiss={toggleActive}
+      duration={1500}
+    />
   ) : null;
 
   return <Frame>{toastMarkup}</Frame>;
