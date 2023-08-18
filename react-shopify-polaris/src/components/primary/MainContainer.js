@@ -1,24 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import MainPage from "./MainPage";
 import TodoTable from "../todo/TodoTable";
 import useFetchApi from "../../hooks/useFetchApi";
-import usePost from "../../hooks/usePost";
+import fetchData from "../../helpers/utils/requestApi";
 
 const MainContainer = () => {
   const {
     data: todoes,
     setData: setTodoes,
     loading: getLoading,
-  } = useFetchApi("/todoes");
-
-  const { postData, loading: createTodoLoading } = usePost("/todo");
+  } = useFetchApi("todoes");
+  const [createTodoLoading, setCreateTodoLoading] = useState(false);
   const createTodo = async (text) => {
+    setCreateTodoLoading(true);
     try {
-      const { success, data } = await postData({
-        id: uuidv4(),
-        text,
-        isCompleted: false,
+      const { success, data } = await fetchData({
+        method: "POST",
+        data: {
+          id: uuidv4(),
+          text,
+          isCompleted: false,
+        },
+        url: "todo",
       });
       if (success) {
         setTodoes((prev) => [data, ...prev]);
@@ -26,6 +30,8 @@ const MainContainer = () => {
       return { success };
     } catch (error) {
       throw new Error();
+    } finally {
+      setCreateTodoLoading(false);
     }
   };
 

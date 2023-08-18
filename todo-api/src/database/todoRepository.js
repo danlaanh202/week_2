@@ -39,13 +39,13 @@ export function removeMultipleTodoes(ids) {
   saveTodo(tempTodoes);
   return tempTodoes;
 }
-export function toggleMultipleTodoes(ids) {
+export function completeMultipleTodoes(ids) {
   if (!ids) {
     return;
   }
 
   const tempTodoes = [...todoes].map((item) =>
-    ids.includes(item.id) ? { ...item, isCompleted: !item.isCompleted } : item
+    ids.includes(item.id) ? { ...item, isCompleted: true } : item
   );
   saveTodo(tempTodoes);
 }

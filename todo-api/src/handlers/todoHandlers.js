@@ -4,7 +4,7 @@ import {
   removeTodo,
   removeMultipleTodoes,
   toggleTodo,
-  toggleMultipleTodoes,
+  completeMultipleTodoes,
 } from "../database/todoRepository";
 
 export async function getTodoes(ctx) {
@@ -27,8 +27,10 @@ export async function getTodoes(ctx) {
 }
 
 export async function createTd(ctx) {
+  console.log(ctx.request.body);
   try {
     const data = ctx.request.body;
+    console.log(data);
     createTodo(data);
     ctx.status = 201;
     return (ctx.body = {
@@ -78,10 +80,10 @@ export async function toggle(ctx) {
   }
 }
 
-export async function toggleMultiple(ctx) {
+export async function completeMultiple(ctx) {
   try {
-    const { ids } = JSON.parse(ctx.request.body);
-    toggleMultipleTodoes(ids);
+    const { ids } = ctx.request.body;
+    completeMultipleTodoes(ids);
     ctx.status = 201;
     return (ctx.body = {
       success: true,

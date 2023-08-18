@@ -6,18 +6,24 @@ import {
   Stack,
   TextStyle,
 } from "@shopify/polaris";
-import React from "react";
-import usePutTodo from "../../hooks/usePutTodo";
-import useDeleteTodo from "../../hooks/useDeleteTodo";
+import React, { useState } from "react";
 import useToast from "../../hooks/useToast";
+import fetchData from "../../helpers/utils/requestApi";
 
 const TodoItem = ({ todo, setTodoes }) => {
   const { showToast } = useToast();
-  const { putData, loading: toggleLoading } = usePutTodo("/todo");
-  const { deleteData, loading: deleteLoading } = useDeleteTodo("/todo");
+  const [toggleLoading, setToggleLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
   const toggleTodo = async (id) => {
+    if (toggleLoading) return;
+    setToggleLoading(true);
     try {
-      const { success } = await putData({ id });
+      const { success } = await fetchData({
+        url: "todo",
+        method: "PUT",
+        data: { id },
+      });
       if (success) {
         setTodoes((prev) =>
           prev.map((item) =>
@@ -32,17 +38,27 @@ const TodoItem = ({ todo, setTodoes }) => {
       }
     } catch (error) {
       showToast("Error toggle todo");
+      setToggleLoading(false);
+    } finally {
+      setToggleLoading(false);
     }
   };
 
   const removeTodo = async (id) => {
+    setDeleteLoading(true);
     try {
-      const { success } = await deleteData(`/${id}`);
+      const { success } = await fetchData({
+        url: `todo/${id}`,
+        method: "DELETE",
+      });
       if (success) {
         setTodoes((prev) => prev.filter((item) => item.id !== id));
       }
     } catch (error) {
       showToast("Error remove todo");
+      setDeleteLoading(false);
+    } finally {
+      setDeleteLoading(false);
     }
   };
 

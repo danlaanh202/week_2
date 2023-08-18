@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import Spinner from "../ui/Spinner";
 
-import fetchData from "../../helpers/requestApi";
+import fetchData from "../../helpers/utils/requestApi";
 
 const Todo = ({ todo, todoId, setTodoes }) => {
   // const { putData, loading: toggleLoading } = usePutTodo("/todo");
@@ -38,7 +38,7 @@ const Todo = ({ todo, todoId, setTodoes }) => {
         url: `todo/${id}`,
         method: "DELETE",
       });
-      // deleteData(id);
+
       if (success) {
         setTodoes((prev) => prev.filter((item) => item.id !== id));
       }

@@ -2,9 +2,9 @@ import { ResourceList, Card, EmptyState, Stack } from "@shopify/polaris";
 import { useState } from "react";
 import TodoItem from "./TodoItem";
 import CreateTodoModal from "../modal/CreateTodoModal";
-import usePutTodo from "../../hooks/usePutTodo";
-import usePost from "../../hooks/usePost";
+
 import useToast from "../../hooks/useToast";
+import fetchData from "../../helpers/utils/requestApi";
 
 export default function TodoTable({
   todoes,
@@ -15,36 +15,49 @@ export default function TodoTable({
 }) {
   const { showToast } = useToast();
   const [selectedItems, setSelectedItems] = useState([]);
-  const { postData: deleteMultipleData, loading: multipleDeleteLoading } =
-    usePost("/todoes");
-  const { putData: toggleMultipleData, loading: multipleToggleLoading } =
-    usePutTodo("/todoes");
+  const [multipleDeleteLoading, setMultipleDeleteLoading] = useState(false);
+  const [multipleToggleLoading, setMultipleToggleLoading] = useState(false);
+
   const removeTodoMultiple = async (ids) => {
+    setMultipleDeleteLoading(true);
     try {
-      const { success } = await deleteMultipleData({ ids });
+      const { success } = await fetchData({
+        url: "todoes",
+        data: { ids },
+        method: "POST",
+      });
       if (success) {
         setTodoes((prev) => [...prev].filter((item) => !ids.includes(item.id)));
         setSelectedItems([]);
       }
     } catch (error) {
+      setMultipleDeleteLoading(false);
       showToast("Error remove multiple");
+    } finally {
+      setMultipleDeleteLoading(false);
     }
   };
   const toggleTodoMultiple = async (ids) => {
+    setMultipleToggleLoading(true);
     try {
-      const { success } = await toggleMultipleData({ ids });
+      const { success } = await fetchData({
+        url: "todoes",
+        data: { ids },
+        method: "PUT",
+      });
       if (success) {
         setTodoes((prev) =>
           [...prev].map((item) =>
-            ids.includes(item.id)
-              ? { ...item, isCompleted: !item.isCompleted }
-              : item
+            ids.includes(item.id) ? { ...item, isCompleted: true } : item
           )
         );
         setSelectedItems([]);
       }
     } catch (error) {
       showToast("Error toggle multiple");
+      setMultipleToggleLoading(true);
+    } finally {
+      setMultipleToggleLoading(false);
     }
   };
 
