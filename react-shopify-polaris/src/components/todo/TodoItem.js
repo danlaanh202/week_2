@@ -14,18 +14,22 @@ const TodoItem = ({ todo, setTodoes }) => {
   const { putData } = usePutTodo("/todo");
   const { deleteData, loading: deleteLoading } = useDeleteTodo("/todo");
   const toggleTodo = async (id) => {
-    const success = await putData(`/${id}`);
-    if (success) {
-      setTodoes((prev) =>
-        prev.map((item) =>
-          item.id === id
-            ? {
-                ...item,
-                isCompleted: !item.isCompleted,
-              }
-            : item
-        )
-      );
+    try {
+      const { success } = await putData({ id });
+      if (success) {
+        setTodoes((prev) =>
+          prev.map((item) =>
+            item.id === id
+              ? {
+                  ...item,
+                  isCompleted: !item.isCompleted,
+                }
+              : item
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

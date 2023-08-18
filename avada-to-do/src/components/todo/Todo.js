@@ -8,7 +8,7 @@ const Todo = ({ todo, todoId, setTodoes }) => {
   const toggleTodo = async (id) => {
     if (toggleLoading) return;
     try {
-      const { success } = await putData(id);
+      const { success } = await putData({ id });
       if (success) {
         setTodoes((prev) =>
           prev.map((item) =>

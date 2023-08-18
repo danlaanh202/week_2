@@ -14,10 +14,11 @@ const MainContainer = () => {
 
   const { postData, loading: createTodoLoading } = usePost("/todo");
   const createTodo = async (text) => {
-    const { success, data } = await postData(text).then(({ data }) =>
-      setTodoes((prev) => [data, ...prev])
-    );
-    return success;
+    const { success, data } = await postData(text);
+    if (success) {
+      setTodoes((prev) => [data, ...prev]);
+    }
+    return { success };
   };
 
   return (

@@ -61,7 +61,8 @@ export async function remove(ctx) {
 
 export async function toggle(ctx) {
   try {
-    const { id } = ctx.params;
+    const { id } = JSON.parse(ctx.request.body);
+
     toggleTodo(id);
     ctx.status = 201;
     return (ctx.body = {
@@ -77,11 +78,8 @@ export async function toggle(ctx) {
 
 export async function toggleMultiple(ctx) {
   try {
-    const { ids } = ctx.query;
-    console.log(ids);
-    const idsParam = Array.isArray(ids) ? ids : [ids];
-    console.log(idsParam);
-    toggleMultipleTodoes(idsParam);
+    const { ids } = JSON.parse(ctx.request.body);
+    toggleMultipleTodoes(ids);
     ctx.status = 201;
     return (ctx.body = {
       success: true,

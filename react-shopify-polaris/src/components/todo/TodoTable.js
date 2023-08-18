@@ -5,6 +5,7 @@ import {
   Button,
   Stack,
   TextStyle,
+  ButtonGroup,
 } from "@shopify/polaris";
 import { useEffect, useState } from "react";
 import TodoItem from "./TodoItem";
@@ -25,18 +26,22 @@ export default function TodoTable({
     useDeleteTodo("/todoes");
   const { putData: toggleMultipleData, loading: multipleToggleLoading } =
     usePutTodo("/todoes");
-  const removeTodoMultiple = (ids) => {
-    deleteMultipleData(arrayToQuery(ids, "ids")).then(({ success }) => {});
+  const removeTodoMultiple = async (ids) => {
+    try {
+      const { success } = await deleteMultipleData(arrayToQuery(ids, "ids"));
+      if (success) {
+      }
+    } catch (error) {}
   };
   const toggleTodoMultiple = async (ids) => {
-    const { success } = await toggleMultipleData(arrayToQuery(ids, "ids"));
+    const { success } = await toggleMultipleData({ ids });
     if (success) {
       setTodoes((prev) =>
-        prev.map((item) => {
-          return ids.includes(item.id)
+        [...prev].map((item) =>
+          ids.includes(item.id)
             ? { ...item, isCompleted: !item.isCompleted }
-            : item;
-        })
+            : item
+        )
       );
     }
   };
@@ -83,13 +88,13 @@ export default function TodoTable({
         promotedBulkActions={[
           {
             content: "Complete",
-
             onAction: () => toggleTodoMultiple(selectedItems),
+            disabled: multipleToggleLoading,
           },
           {
             content: "Delete",
-
             onAction: () => removeTodoMultiple(selectedItems),
+            disabled: multipleDeleteLoading,
           },
         ]}
         renderItem={(item) => <TodoItem setTodoes={setTodoes} todo={item} />}

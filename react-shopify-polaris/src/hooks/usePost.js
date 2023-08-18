@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { rootApi } from "../constants";
+import { rootApi } from "../helpers/constants";
 
 const usePost = (url) => {
   const [loading, setLoading] = useState(false);
