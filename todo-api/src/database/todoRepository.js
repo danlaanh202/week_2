@@ -48,6 +48,7 @@ export function toggleMultipleTodoes(ids) {
     ids.includes(item.id) ? { ...item, isCompleted: !item.isCompleted } : item
   );
   saveTodo(tempTodoes);
+  return tempTodoes;
 }
 
 export function removeTodoes() {

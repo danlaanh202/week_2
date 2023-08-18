@@ -31,19 +31,28 @@ export default function TodoTable({
     try {
       const { success } = await deleteMultipleData({ ids });
       if (success) {
+        setTodoes((prev) => [...prev].filter((item) => !ids.includes(item.id)));
+        setSelectedItems([]);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
   const toggleTodoMultiple = async (ids) => {
-    const { success } = await toggleMultipleData({ ids });
-    if (success) {
-      setTodoes((prev) =>
-        [...prev].map((item) =>
-          ids.includes(item.id)
-            ? { ...item, isCompleted: !item.isCompleted }
-            : item
-        )
-      );
+    try {
+      const { success } = await toggleMultipleData({ ids });
+      if (success) {
+        setTodoes((prev) =>
+          [...prev].map((item) =>
+            ids.includes(item.id)
+              ? { ...item, isCompleted: !item.isCompleted }
+              : item
+          )
+        );
+        setSelectedItems([]);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

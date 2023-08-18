@@ -55,6 +55,7 @@ const CreateTodoModal = ({ createTodo, createTodoLoading }) => {
               value={inputVal}
               onChange={handleChange}
               placeholder="Your next todo"
+              autoFocus
             ></TextField>
           </TextContainer>
         </form>

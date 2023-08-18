@@ -34,14 +34,16 @@ const TodoItem = ({ todo, setTodoes }) => {
   };
 
   const removeTodo = async (id) => {
-    const { success } = await deleteData(`/${id}`);
-    if (success) {
-      setTodoes((prev) => prev.filter((item) => item.id !== id));
+    try {
+      const { success } = await deleteData(`/${id}`);
+      if (success) {
+        setTodoes((prev) => prev.filter((item) => item.id !== id));
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
-  useEffect(() => {
-    console.log(toggleLoading);
-  }, [toggleLoading]);
+
   return (
     <ResourceItem id={todo.id}>
       <Stack distribution="equalSpacing">

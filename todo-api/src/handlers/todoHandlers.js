@@ -30,7 +30,6 @@ export async function createTd(ctx) {
   try {
     const data = ctx.request.body;
     createTodo(data);
-
     ctx.status = 201;
     return (ctx.body = {
       success: true,
@@ -81,13 +80,11 @@ export async function toggle(ctx) {
 export async function toggleMultiple(ctx) {
   try {
     const { ids } = JSON.parse(ctx.request.body);
-    toggleMultipleTodoes(ids);
+    const data = toggleMultipleTodoes(ids);
     ctx.status = 201;
     return (ctx.body = {
       success: true,
-      data: {
-        ids,
-      },
+      data,
     });
   } catch (error) {
     return (ctx.body = {
