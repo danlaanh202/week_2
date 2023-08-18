@@ -1,25 +1,34 @@
 import { useState } from "react";
-import usePost from "../../hooks/usePost";
 import Spinner from "../ui/Spinner";
-
+import fetchData from "../../helpers/requestApi";
+import { v4 as uuidv4 } from "uuid";
 const TodoForm = ({ setTodoes }) => {
   const [value, setValue] = useState("");
-
-  const { postData, loading: postLoading } = usePost("/todo");
+  const [postLoading, setPostLoading] = useState(false);
   const createTodo = async (text) => {
+    setPostLoading(true);
     try {
-      const { data, success } = await postData(text);
+      const { data, success } = await fetchData({
+        url: "todo",
+        data: {
+          id: uuidv4(),
+          text,
+          isCompleted: false,
+        },
+        method: "POST",
+      });
       if (success) {
         setTodoes((prev) => [data, ...prev]);
         setValue("");
       }
     } catch (error) {
       alert("Can't create new todo");
+    } finally {
+      setPostLoading(false);
     }
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    // todo: thông báo lỗi nhé
     if (!value) return;
     createTodo(value);
   };

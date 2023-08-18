@@ -1,14 +1,22 @@
-import React, { useEffect } from "react";
-import usePutTodo from "../../hooks/usePutTodo";
+import React, { useEffect, useState } from "react";
+
 import Spinner from "../ui/Spinner";
-import useDeleteTodo from "../../hooks/useDeleteTodo";
+
+import fetchData from "../../helpers/requestApi";
 
 const Todo = ({ todo, todoId, setTodoes }) => {
-  const { putData, loading: toggleLoading } = usePutTodo("/todo");
+  // const { putData, loading: toggleLoading } = usePutTodo("/todo");
+  const [toggleLoading, setToggleLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const toggleTodo = async (id) => {
     if (toggleLoading) return;
+    setToggleLoading(true);
     try {
-      const { success } = await putData({ id });
+      const { success } = await fetchData({
+        url: "todo",
+        data: { id },
+        method: "PUT",
+      });
       if (success) {
         setTodoes((prev) =>
           prev.map((item) =>
@@ -18,20 +26,26 @@ const Todo = ({ todo, todoId, setTodoes }) => {
       }
     } catch (error) {
       alert("Can not toggle todo");
+    } finally {
+      setToggleLoading(false);
     }
   };
-  //todo: mấy chỗ kiểu này thường thì bọn anh kahs là ít viết bằng hook ,
-  // viết hook chỗ này nó khá là không cần thiết mà xong mình cần cần viết thêm 1 hàm deleteTodo 
-  // thay vào đó mình có thể viết 1 hàm tổng quát dạng fetch data thì nó dễ xử lí hơn ở chỗ này mà có thể dùng cả PUT POST ..... . https://imgur.com/qWMPrmc tham khảo nhé . và viết lại chỗ này nhé .
-  const { deleteData, loading: deleteLoading } = useDeleteTodo("/todo");
+
   const deleteTodo = async (id) => {
+    setDeleteLoading(true);
     try {
-      const { success } = await deleteData(id);
+      const { success } = await fetchData({
+        url: `todo/${id}`,
+        method: "DELETE",
+      });
+      // deleteData(id);
       if (success) {
         setTodoes((prev) => prev.filter((item) => item.id !== id));
       }
     } catch (error) {
       alert("Something went wrong when delete");
+    } finally {
+      setDeleteLoading(false);
     }
   };
 

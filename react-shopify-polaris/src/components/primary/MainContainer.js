@@ -1,6 +1,5 @@
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import styles from "./MainContainer.module.css";
 import MainPage from "./MainPage";
 import TodoTable from "../todo/TodoTable";
 import useFetchApi from "../../hooks/useFetchApi";
@@ -32,7 +31,7 @@ const MainContainer = () => {
 
   return (
     <div className="main-container">
-      <div className={`${styles["main-container__content"]}`}>
+      <div className="main-container__content">
         <MainPage />
         <TodoTable
           fetchLoading={getLoading}

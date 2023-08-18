@@ -61,9 +61,10 @@ export async function remove(ctx) {
 }
 
 export async function toggle(ctx) {
+  // console.log(ctx.request.body);
   try {
-    const { id } = JSON.parse(ctx.request.body);
-
+    const { id } = ctx.request.body;
+    console.log(id);
     toggleTodo(id);
     ctx.status = 201;
     return (ctx.body = {
@@ -80,11 +81,10 @@ export async function toggle(ctx) {
 export async function toggleMultiple(ctx) {
   try {
     const { ids } = JSON.parse(ctx.request.body);
-    const data = toggleMultipleTodoes(ids);
+    toggleMultipleTodoes(ids);
     ctx.status = 201;
     return (ctx.body = {
       success: true,
-      data,
     });
   } catch (error) {
     return (ctx.body = {
@@ -97,7 +97,6 @@ export async function removeMultiple(ctx) {
   // POST METHOD
   try {
     const { ids } = ctx.request.body;
-    console.log(ctx.request.body.ids);
     removeMultipleTodoes(ids);
     ctx.status = 200;
     return (ctx.body = {

@@ -4,15 +4,8 @@ import TodoForm from "../todo/TodoForm";
 import useFetchApi from "../../hooks/useFetchApi";
 
 const App = () => {
-  const {
-    data: todoes,
-    setData: setTodoes,
-    loading: fetchLoading,
-  } = useFetchApi("/todoes");
+  const { data: todoes, setData: setTodoes } = useFetchApi("todoes");
 
-  useEffect(() => {
-    console.log(todoes);
-  }, [todoes]);
   return (
     <div className="app">
       <div className="todo-list">

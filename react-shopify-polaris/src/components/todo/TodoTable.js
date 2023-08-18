@@ -16,7 +16,7 @@ export default function TodoTable({
   const { showToast } = useToast();
   const [selectedItems, setSelectedItems] = useState([]);
   const { postData: deleteMultipleData, loading: multipleDeleteLoading } =
-    usePost("/todoes/remove-multiple");
+    usePost("/todoes");
   const { putData: toggleMultipleData, loading: multipleToggleLoading } =
     usePutTodo("/todoes");
   const removeTodoMultiple = async (ids) => {

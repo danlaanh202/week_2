@@ -1,3 +1,0 @@
-// todo :các biến const nên viết dạng này ROOT_API = ....
-// đặt rõ tên file là chưa biến const của phần nào chứ đừng đặt kiểu chung chung như index thế này nhé 
-export const rootApi = "http://localhost:5000/api";
