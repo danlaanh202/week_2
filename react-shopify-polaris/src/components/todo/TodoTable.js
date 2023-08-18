@@ -13,6 +13,7 @@ import CreateTodoModal from "../modal/CreateTodoModal";
 import useDeleteTodo from "../../hooks/useDeleteTodo";
 import usePutTodo from "../../hooks/usePutTodo";
 import arrayToQuery from "../../helpers/arrayToQuery";
+import usePost from "../../hooks/usePost";
 
 export default function TodoTable({
   todoes,
@@ -22,13 +23,13 @@ export default function TodoTable({
   createTodoLoading,
 }) {
   const [selectedItems, setSelectedItems] = useState([]);
-  const { deleteData: deleteMultipleData, loading: multipleDeleteLoading } =
-    useDeleteTodo("/todoes");
+  const { postData: deleteMultipleData, loading: multipleDeleteLoading } =
+    usePost("/todoes/remove-multiple");
   const { putData: toggleMultipleData, loading: multipleToggleLoading } =
     usePutTodo("/todoes");
   const removeTodoMultiple = async (ids) => {
     try {
-      const { success } = await deleteMultipleData(arrayToQuery(ids, "ids"));
+      const { success } = await deleteMultipleData({ ids });
       if (success) {
       }
     } catch (error) {}

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+
 import { rootApi } from "../helpers/constants";
 
 const usePost = (url) => {
   const [loading, setLoading] = useState(false);
-  const postData = async (text) => {
+  const postData = async (body) => {
     setLoading(true);
     try {
       return await fetch(`${rootApi}${url}`, {
@@ -12,11 +12,7 @@ const usePost = (url) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          id: uuidv4(),
-          text,
-          isCompleted: false,
-        }),
+        body: JSON.stringify(body),
       }).then((resp) => resp.json());
     } catch (error) {
       console.log(error);

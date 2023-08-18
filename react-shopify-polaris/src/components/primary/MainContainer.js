@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { v4 as uuidv4 } from "uuid";
 import styles from "./MainContainer.module.css";
 import MainPage from "./MainPage";
 import TodoTable from "../todo/TodoTable";
@@ -14,7 +15,11 @@ const MainContainer = () => {
 
   const { postData, loading: createTodoLoading } = usePost("/todo");
   const createTodo = async (text) => {
-    const { success, data } = await postData(text);
+    const { success, data } = await postData({
+      id: uuidv4(),
+      text,
+      isCompleted: false,
+    });
     if (success) {
       setTodoes((prev) => [data, ...prev]);
     }

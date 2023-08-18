@@ -11,12 +11,19 @@ export async function getTodoes(ctx) {
   try {
     const todoes = getAllTodoes();
     ctx.status = 200;
+    if (!todo) {
+      ctx.status = 404;
+      return (ctx.body = {
+        data: [],
+        success: false,
+      });
+    }
     return (ctx.body = {
       data: todoes,
       success: true,
     });
   } catch (e) {
-    ctx.status = 404;
+    ctx.status = 500;
     return (ctx.body = {
       success: false,
       data: [],
@@ -36,6 +43,7 @@ export async function createTd(ctx) {
       data,
     });
   } catch (e) {
+    ctx.status = 500;
     return (ctx.body = {
       success: false,
       error: e.message,
@@ -83,6 +91,9 @@ export async function toggleMultiple(ctx) {
     ctx.status = 201;
     return (ctx.body = {
       success: true,
+      data: {
+        ids,
+      },
     });
   } catch (error) {
     return (ctx.body = {
@@ -92,11 +103,11 @@ export async function toggleMultiple(ctx) {
   }
 }
 export async function removeMultiple(ctx) {
+  // POST METHOD
   try {
-    const { ids } = ctx.query;
-    // console.log(instanceof ids)
-    const idsParam = Array.isArray(ids) ? ids : [ids];
-    removeMultipleTodoes(idsParam);
+    const { ids } = ctx.request.body;
+    console.log(ctx.request.body.ids);
+    removeMultipleTodoes(ids);
     ctx.status = 200;
     return (ctx.body = {
       success: true,
