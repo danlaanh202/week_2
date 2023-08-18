@@ -6,12 +6,12 @@ import {
   Stack,
   TextStyle,
 } from "@shopify/polaris";
-import React from "react";
+import React, { useEffect } from "react";
 import usePutTodo from "../../hooks/usePutTodo";
 import useDeleteTodo from "../../hooks/useDeleteTodo";
 
 const TodoItem = ({ todo, setTodoes }) => {
-  const { putData } = usePutTodo("/todo");
+  const { putData, loading: toggleLoading } = usePutTodo("/todo");
   const { deleteData, loading: deleteLoading } = useDeleteTodo("/todo");
   const toggleTodo = async (id) => {
     try {
@@ -39,7 +39,9 @@ const TodoItem = ({ todo, setTodoes }) => {
       setTodoes((prev) => prev.filter((item) => item.id !== id));
     }
   };
-
+  useEffect(() => {
+    console.log(toggleLoading);
+  }, [toggleLoading]);
   return (
     <ResourceItem id={todo.id}>
       <Stack distribution="equalSpacing">
@@ -55,7 +57,7 @@ const TodoItem = ({ todo, setTodoes }) => {
 
           <Button
             onClick={() => toggleTodo(todo.id)}
-            loading={deleteLoading}
+            loading={toggleLoading}
             primary
           >
             Toggle complete

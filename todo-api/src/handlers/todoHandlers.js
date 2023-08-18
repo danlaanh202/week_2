@@ -11,13 +11,7 @@ export async function getTodoes(ctx) {
   try {
     const todoes = getAllTodoes();
     ctx.status = 200;
-    if (!todo) {
-      ctx.status = 404;
-      return (ctx.body = {
-        data: [],
-        success: false,
-      });
-    }
+
     return (ctx.body = {
       data: todoes,
       success: true,
