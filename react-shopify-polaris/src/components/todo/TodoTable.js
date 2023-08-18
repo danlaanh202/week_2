@@ -1,19 +1,10 @@
-import {
-  ResourceList,
-  Card,
-  EmptyState,
-  Button,
-  Stack,
-  TextStyle,
-  ButtonGroup,
-} from "@shopify/polaris";
-import { useEffect, useState } from "react";
+import { ResourceList, Card, EmptyState, Stack } from "@shopify/polaris";
+import { useState } from "react";
 import TodoItem from "./TodoItem";
 import CreateTodoModal from "../modal/CreateTodoModal";
-import useDeleteTodo from "../../hooks/useDeleteTodo";
 import usePutTodo from "../../hooks/usePutTodo";
-import arrayToQuery from "../../helpers/arrayToQuery";
 import usePost from "../../hooks/usePost";
+import useToast from "../../hooks/useToast";
 
 export default function TodoTable({
   todoes,
@@ -22,6 +13,7 @@ export default function TodoTable({
   fetchLoading,
   createTodoLoading,
 }) {
+  const { showToast } = useToast();
   const [selectedItems, setSelectedItems] = useState([]);
   const { postData: deleteMultipleData, loading: multipleDeleteLoading } =
     usePost("/todoes/remove-multiple");
@@ -35,7 +27,7 @@ export default function TodoTable({
         setSelectedItems([]);
       }
     } catch (error) {
-      console.log(error);
+      showToast("Error remove multiple");
     }
   };
   const toggleTodoMultiple = async (ids) => {
@@ -52,7 +44,7 @@ export default function TodoTable({
         setSelectedItems([]);
       }
     } catch (error) {
-      console.log(error);
+      showToast("Error toggle multiple");
     }
   };
 

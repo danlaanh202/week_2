@@ -6,24 +6,30 @@ import {
   TextField,
   TextStyle,
 } from "@shopify/polaris";
+import useToast from "../../hooks/useToast";
 
 const CreateTodoModal = ({ createTodo, createTodoLoading }) => {
+  const { showToast } = useToast();
   const [showModal, setShowModal] = useState(false);
   const [inputVal, setInputVal] = useState("");
 
   const toggleModal = useCallback(() => setShowModal((prev) => !prev), []);
   const handleChange = useCallback((newValue) => setInputVal(newValue), []);
   const create = async (e) => {
-    e.preventDefault();
-    if (!inputVal) {
-      return;
+    try {
+      e.preventDefault();
+      if (!inputVal) {
+        return;
+      }
+      const { success } = await createTodo(inputVal);
+      if (!success) {
+        return;
+      }
+      setInputVal("");
+      toggleModal();
+    } catch (error) {
+      showToast("Can not create Todo");
     }
-    const { success } = await createTodo(inputVal);
-    if (!success) {
-      return;
-    }
-    setInputVal("");
-    toggleModal();
   };
   return (
     <Modal

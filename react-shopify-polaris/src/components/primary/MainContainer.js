@@ -15,15 +15,19 @@ const MainContainer = () => {
 
   const { postData, loading: createTodoLoading } = usePost("/todo");
   const createTodo = async (text) => {
-    const { success, data } = await postData({
-      id: uuidv4(),
-      text,
-      isCompleted: false,
-    });
-    if (success) {
-      setTodoes((prev) => [data, ...prev]);
+    try {
+      const { success, data } = await postData({
+        id: uuidv4(),
+        text,
+        isCompleted: false,
+      });
+      if (success) {
+        setTodoes((prev) => [data, ...prev]);
+      }
+      return { success };
+    } catch (error) {
+      throw new Error();
     }
-    return { success };
   };
 
   return (

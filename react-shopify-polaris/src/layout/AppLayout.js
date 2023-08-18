@@ -1,11 +1,12 @@
-import { Layout } from "@shopify/polaris";
 import Topbar from "../components/Topbar";
+import ToastError from "../components/ui/ToastError";
 
 const AppLayout = ({ children }) => {
   return (
     <>
       <Topbar />
       {children}
+      <ToastError />
     </>
   );
 };

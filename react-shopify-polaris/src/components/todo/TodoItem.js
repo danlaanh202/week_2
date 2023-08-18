@@ -6,11 +6,13 @@ import {
   Stack,
   TextStyle,
 } from "@shopify/polaris";
-import React, { useEffect } from "react";
+import React from "react";
 import usePutTodo from "../../hooks/usePutTodo";
 import useDeleteTodo from "../../hooks/useDeleteTodo";
+import useToast from "../../hooks/useToast";
 
 const TodoItem = ({ todo, setTodoes }) => {
+  const { showToast } = useToast();
   const { putData, loading: toggleLoading } = usePutTodo("/todo");
   const { deleteData, loading: deleteLoading } = useDeleteTodo("/todo");
   const toggleTodo = async (id) => {
@@ -29,7 +31,7 @@ const TodoItem = ({ todo, setTodoes }) => {
         );
       }
     } catch (error) {
-      console.log(error);
+      showToast("Error toggle todo");
     }
   };
 
@@ -40,7 +42,7 @@ const TodoItem = ({ todo, setTodoes }) => {
         setTodoes((prev) => prev.filter((item) => item.id !== id));
       }
     } catch (error) {
-      console.log(error);
+      showToast("Error remove todo");
     }
   };
 
