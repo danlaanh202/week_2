@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import Todo from "../todo/Todo";
 import TodoForm from "../todo/TodoForm";
 import useFetchApi from "../../hooks/useFetchApi";
-import usePost from "../../hooks/usePost";
-import useDeleteTodo from "../../hooks/useDeleteTodo";
 
 const App = () => {
   const {
