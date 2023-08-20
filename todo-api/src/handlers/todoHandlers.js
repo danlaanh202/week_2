@@ -27,10 +27,8 @@ export async function getTodoes(ctx) {
 }
 
 export async function createTd(ctx) {
-  console.log(ctx.request.body);
   try {
     const data = ctx.request.body;
-    console.log(data);
     createTodo(data);
     ctx.status = 201;
     return (ctx.body = {

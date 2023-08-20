@@ -10,7 +10,7 @@ export default async function todoInputMiddleware(ctx, next) {
     });
 
     await schema.validate(postData);
-    next();
+    return next();
   } catch (e) {
     ctx.status = 400;
     ctx.body = {
