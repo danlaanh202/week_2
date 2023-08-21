@@ -18,7 +18,7 @@ const CreateTodoModal = ({ createTodo, createTodoLoading }) => {
   const create = async (e) => {
     try {
       e.preventDefault();
-      if (!inputVal) {
+      if (!inputVal?.trim()) {
         showToast("Input mustn't be blank");
         return;
       }

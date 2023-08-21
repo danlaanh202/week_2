@@ -10,7 +10,7 @@ const MainContainer = () => {
     data: todoes,
     setData: setTodoes,
     loading: getLoading,
-  } = useFetchApi("todoes");
+  } = useFetchApi("/todoes");
   const [createTodoLoading, setCreateTodoLoading] = useState(false);
   const createTodo = async (text) => {
     setCreateTodoLoading(true);

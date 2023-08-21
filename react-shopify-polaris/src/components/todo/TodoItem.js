@@ -12,12 +12,11 @@ import fetchData from "../../helpers/utils/requestApi";
 
 const TodoItem = ({ todo, setTodoes }) => {
   const { showToast } = useToast();
-  const [toggleLoading, setToggleLoading] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const toggleTodo = async (id) => {
-    if (toggleLoading) return;
-    setToggleLoading(true);
+    if (loading) return;
+    setLoading(true);
     try {
       const { success } = await fetchData({
         url: "/todo",
@@ -38,14 +37,14 @@ const TodoItem = ({ todo, setTodoes }) => {
       }
     } catch (error) {
       showToast("Error toggle todo");
-      setToggleLoading(false);
+      setLoading(false);
     } finally {
-      setToggleLoading(false);
+      setLoading(false);
     }
   };
 
   const removeTodo = async (id) => {
-    setDeleteLoading(true);
+    setLoading(true);
     try {
       const { success } = await fetchData({
         url: `/todo/${id}`,
@@ -56,9 +55,9 @@ const TodoItem = ({ todo, setTodoes }) => {
       }
     } catch (error) {
       showToast("Error remove todo");
-      setDeleteLoading(false);
+      setLoading(false);
     } finally {
-      setDeleteLoading(false);
+      setLoading(false);
     }
   };
 
@@ -75,16 +74,12 @@ const TodoItem = ({ todo, setTodoes }) => {
             {todo.isCompleted && console.log("asdas")}
           </Badge>
 
-          <Button
-            onClick={() => toggleTodo(todo.id)}
-            loading={toggleLoading}
-            primary
-          >
+          <Button onClick={() => toggleTodo(todo.id)} loading={loading} primary>
             {todo.isCompleted ? "Undo" : "Complete"}
           </Button>
           <Button
-            loading={deleteLoading}
-            disabled={deleteLoading}
+            loading={loading}
+            disabled={loading}
             onClick={() => removeTodo(todo.id)}
             destructive
           >
