@@ -8,9 +8,11 @@ const TodoForm = ({ setTodoes }) => {
   const createTodo = async (text) => {
     setPostLoading(true);
     try {
+
       const { data, success } = await fetchData({
         url: "todo",
         data: {
+          //todo : thay vì gen id ở đây thì liệu mình có thể gen id ở backend và trả về id ở đây để lấy đc id khộng em nhỉ 
           id: uuidv4(),
           text,
           isCompleted: false,
@@ -29,6 +31,7 @@ const TodoForm = ({ setTodoes }) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    //todo chỗ này nên thông báo gì đó để khách biết không đc thêm khoảng trắng chứ nhề 
     if (!value) return;
     createTodo(value);
   };

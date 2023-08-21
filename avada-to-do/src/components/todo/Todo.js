@@ -9,6 +9,8 @@ const Todo = ({ todo, todoId, setTodoes }) => {
   const [toggleLoading, setToggleLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const toggleTodo = async (id) => {
+    // todo: sao khi delete và update todo mình không để cùng 1 loading nhỉ ? trong trường hợp người nta vừa update vừa xóa thì sao nhỉ . Thế nên anh nghĩ chỉ cần 1 loading thôi,
+    // sửa lại nhé 
     if (toggleLoading) return;
     setToggleLoading(true);
     try {
