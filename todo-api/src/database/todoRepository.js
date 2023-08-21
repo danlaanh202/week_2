@@ -1,6 +1,7 @@
-import fs from "fs";
 const { data: todoes } = require("./todoes.json");
+import fs from "fs";
 import path from "path";
+import { v4 as uuidv4 } from "uuid";
 function saveTodo(data) {
   fs.writeFileSync(
     path.join(__dirname, "/todoes.json"),
@@ -15,8 +16,11 @@ export function getAllTodoes() {
 }
 
 export function createTodo(data) {
-  const updatedTodoes = [data, ...todoes];
+  const generatedId = uuidv4();
+  const updatedTodo = { ...data, id: generatedId };
+  const updatedTodoes = [updatedTodo, ...todoes];
   saveTodo(updatedTodoes);
+  return updatedTodo;
 }
 
 export function removeTodo(id) {

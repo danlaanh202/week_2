@@ -15,12 +15,13 @@
   "email": "anhnt@avada.io",
   "license": "MIT",
   "dependencies": {
-    "faker": "^5.4.0",
-    "cors": "^2.8.5",
     "@koa/cors": "^4.0.0",
+    "cors": "^2.8.5",
+    "faker": "^5.4.0",
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
     "koa-router": "^10.0.0",
+    "uuid": "^9.0.0",
     "yup": "^0.32.9"
   },
   "devDependencies": {

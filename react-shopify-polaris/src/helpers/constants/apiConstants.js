@@ -1,1 +1,1 @@
-export const ROOT_API = "http://localhost:5000/api/";
+export const ROOT_API = "http://localhost:5000/api";

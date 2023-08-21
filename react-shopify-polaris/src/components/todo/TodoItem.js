@@ -20,7 +20,7 @@ const TodoItem = ({ todo, setTodoes }) => {
     setToggleLoading(true);
     try {
       const { success } = await fetchData({
-        url: "todo",
+        url: "/todo",
         method: "PUT",
         data: { id },
       });
@@ -48,7 +48,7 @@ const TodoItem = ({ todo, setTodoes }) => {
     setDeleteLoading(true);
     try {
       const { success } = await fetchData({
-        url: `todo/${id}`,
+        url: `/todo/${id}`,
         method: "DELETE",
       });
       if (success) {
@@ -80,7 +80,7 @@ const TodoItem = ({ todo, setTodoes }) => {
             loading={toggleLoading}
             primary
           >
-            Toggle complete
+            {todo.isCompleted ? "Undo" : "Complete"}
           </Button>
           <Button
             loading={deleteLoading}

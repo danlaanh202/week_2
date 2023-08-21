@@ -4,7 +4,7 @@ import TodoForm from "../todo/TodoForm";
 import useFetchApi from "../../hooks/useFetchApi";
 
 const App = () => {
-  const { data: todoes, setData: setTodoes } = useFetchApi("todoes");
+  const { data: todoes, setData: setTodoes } = useFetchApi("/todoes");
 
   return (
     <div className="app">

@@ -5,19 +5,15 @@ import Spinner from "../ui/Spinner";
 import fetchData from "../../helpers/utils/requestApi";
 
 const Todo = ({ todo, todoId, setTodoes }) => {
-  // const { putData, loading: toggleLoading } = usePutTodo("/todo");
-  const [toggleLoading, setToggleLoading] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const toggleTodo = async (id) => {
-    // todo: sao khi delete và update todo mình không để cùng 1 loading nhỉ ? trong trường hợp người nta vừa update vừa xóa thì sao nhỉ . Thế nên anh nghĩ chỉ cần 1 loading thôi,
-    // sửa lại nhé 
-    if (toggleLoading) return;
-    setToggleLoading(true);
+    if (loading) return;
+    setLoading(true);
     try {
       const { success } = await fetchData({
-        url: "todo",
-        data: { id },
+        url: "/todo",
         method: "PUT",
+        data: { id },
       });
       if (success) {
         setTodoes((prev) =>
@@ -29,15 +25,15 @@ const Todo = ({ todo, todoId, setTodoes }) => {
     } catch (error) {
       alert("Can not toggle todo");
     } finally {
-      setToggleLoading(false);
+      setLoading(false);
     }
   };
 
   const deleteTodo = async (id) => {
-    setDeleteLoading(true);
+    setLoading(true);
     try {
       const { success } = await fetchData({
-        url: `todo/${id}`,
+        url: `/todo/${id}`,
         method: "DELETE",
       });
 
@@ -47,7 +43,7 @@ const Todo = ({ todo, todoId, setTodoes }) => {
     } catch (error) {
       alert("Something went wrong when delete");
     } finally {
-      setDeleteLoading(false);
+      setLoading(false);
     }
   };
 
@@ -61,14 +57,14 @@ const Todo = ({ todo, todoId, setTodoes }) => {
       </div>
       <div className="btn-container">
         <button onClick={() => toggleTodo(todoId)}>
-          {toggleLoading ? (
+          {loading ? (
             <Spinner />
           ) : (
             <span>{todo?.isCompleted ? "Undo" : "Complete"}</span>
           )}
         </button>
         <button style={{ color: "red" }} onClick={() => deleteTodo(todoId)}>
-          {deleteLoading ? <Spinner /> : <span>X</span>}
+          {loading ? <Spinner /> : <span>X</span>}
         </button>
       </div>
     </div>

@@ -2,7 +2,6 @@ import { ResourceList, Card, EmptyState, Stack } from "@shopify/polaris";
 import { useState } from "react";
 import TodoItem from "./TodoItem";
 import CreateTodoModal from "../modal/CreateTodoModal";
-
 import useToast from "../../hooks/useToast";
 import fetchData from "../../helpers/utils/requestApi";
 
@@ -22,7 +21,7 @@ export default function TodoTable({
     setMultipleDeleteLoading(true);
     try {
       const { success } = await fetchData({
-        url: "todoes",
+        url: "/todoes",
         data: { ids },
         method: "POST",
       });
@@ -41,7 +40,7 @@ export default function TodoTable({
     setMultipleToggleLoading(true);
     try {
       const { success } = await fetchData({
-        url: "todoes",
+        url: "/todoes",
         data: { ids },
         method: "PUT",
       });

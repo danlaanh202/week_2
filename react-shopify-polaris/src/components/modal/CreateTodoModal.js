@@ -19,10 +19,12 @@ const CreateTodoModal = ({ createTodo, createTodoLoading }) => {
     try {
       e.preventDefault();
       if (!inputVal) {
+        showToast("Input mustn't be blank");
         return;
       }
       const { success } = await createTodo(inputVal);
       if (!success) {
+        showToast("Failed");
         return;
       }
       setInputVal("");

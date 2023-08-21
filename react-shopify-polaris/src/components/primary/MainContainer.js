@@ -18,11 +18,10 @@ const MainContainer = () => {
       const { success, data } = await fetchData({
         method: "POST",
         data: {
-          id: uuidv4(),
           text,
           isCompleted: false,
         },
-        url: "todo",
+        url: "/todo",
       });
       if (success) {
         setTodoes((prev) => [data, ...prev]);
