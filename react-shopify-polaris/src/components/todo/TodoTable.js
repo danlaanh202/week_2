@@ -44,17 +44,18 @@ export default function TodoTable({
         data: { ids },
         method: "PUT",
       });
-      if (success) {
-        setTodoes((prev) =>
-          [...prev].map((item) =>
-            ids.includes(item.id) ? { ...item, isCompleted: true } : item
-          )
-        );
-        setSelectedItems([]);
+      if (!success) {
+        showToast("Failed calling api");
+        return;
       }
+      setTodoes((prev) =>
+        [...prev].map((item) =>
+          ids.includes(item.id) ? { ...item, isCompleted: true } : item
+        )
+      );
+      setSelectedItems([]);
     } catch (error) {
       showToast("Error toggle multiple");
-      setMultipleToggleLoading(true);
     } finally {
       setMultipleToggleLoading(false);
     }

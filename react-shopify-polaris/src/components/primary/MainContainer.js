@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import MainPage from "./MainPage";
 import TodoTable from "../todo/TodoTable";
 import useFetchApi from "../../hooks/useFetchApi";
@@ -23,9 +22,7 @@ const MainContainer = () => {
         },
         url: "/todo",
       });
-      if (success) {
-        setTodoes((prev) => [data, ...prev]);
-      }
+      setTodoes((prev) => [data, ...prev]);
       return { success };
     } catch (error) {
       throw new Error();

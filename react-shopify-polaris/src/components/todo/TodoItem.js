@@ -23,18 +23,20 @@ const TodoItem = ({ todo, setTodoes }) => {
         method: "PUT",
         data: { id },
       });
-      if (success) {
-        setTodoes((prev) =>
-          prev.map((item) =>
-            item.id === id
-              ? {
-                  ...item,
-                  isCompleted: !item.isCompleted,
-                }
-              : item
-          )
-        );
+      if (!success) {
+        showToast("Toggle error");
+        return;
       }
+      setTodoes((prev) =>
+        prev.map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                isCompleted: !item.isCompleted,
+              }
+            : item
+        )
+      );
     } catch (error) {
       showToast("Error toggle todo");
       setLoading(false);
@@ -71,13 +73,18 @@ const TodoItem = ({ todo, setTodoes }) => {
         <ButtonGroup>
           <Badge status={todo.isCompleted ? "success" : ""}>
             {todo.isCompleted ? "Done" : "Pending"}
-            {todo.isCompleted && console.log("asdas")}
           </Badge>
 
-          <Button onClick={() => toggleTodo(todo.id)} loading={loading} primary>
+          <Button
+            onClick={() => toggleTodo(todo.id)}
+            loading={loading}
+            primary
+            fullWidth
+          >
             {todo.isCompleted ? "Undo" : "Complete"}
           </Button>
           <Button
+            fullWidth
             loading={loading}
             disabled={loading}
             onClick={() => removeTodo(todo.id)}

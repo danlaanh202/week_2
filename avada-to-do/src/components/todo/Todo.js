@@ -4,8 +4,7 @@ import Spinner from "../ui/Spinner";
 
 import fetchData from "../../helpers/utils/requestApi";
 
-//todo : sao truyền todo lại còn truyền tiếp todoId nữa nhỉ ?
-const Todo = ({ todo, todoId, setTodoes }) => {
+const Todo = ({ todo, setTodoes }) => {
   const [loading, setLoading] = useState(false);
   const toggleTodo = async (id) => {
     if (loading) return;
@@ -58,14 +57,14 @@ const Todo = ({ todo, todoId, setTodoes }) => {
         {todo?.text}
       </div>
       <div className="btn-container">
-        <button onClick={() => toggleTodo(todoId)}>
+        <button onClick={() => toggleTodo(todo.id)}>
           {loading ? (
             <Spinner />
           ) : (
             <span>{todo?.isCompleted ? "Undo" : "Complete"}</span>
           )}
         </button>
-        <button style={{ color: "red" }} onClick={() => deleteTodo(todoId)}>
+        <button style={{ color: "red" }} onClick={() => deleteTodo(todo.id)}>
           {loading ? <Spinner /> : <span>X</span>}
         </button>
       </div>
