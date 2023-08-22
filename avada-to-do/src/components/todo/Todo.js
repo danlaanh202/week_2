@@ -4,6 +4,7 @@ import Spinner from "../ui/Spinner";
 
 import fetchData from "../../helpers/utils/requestApi";
 
+//todo : sao truyền todo lại còn truyền tiếp todoId nữa nhỉ ?
 const Todo = ({ todo, todoId, setTodoes }) => {
   const [loading, setLoading] = useState(false);
   const toggleTodo = async (id) => {
@@ -30,6 +31,7 @@ const Todo = ({ todo, todoId, setTodoes }) => {
   };
 
   const deleteTodo = async (id) => {
+    if (loading) return;
     setLoading(true);
     try {
       const { success } = await fetchData({
