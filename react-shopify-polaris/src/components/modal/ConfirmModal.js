@@ -28,6 +28,7 @@ export default function ConfirmModal({ active, setActive, handleDelete }) {
       <Modal.Section>
         <TextContainer>
           <p>
+            {/* todo: cái gì không liên quan thì xóa bớt đi em nhé  */}
             Use Instagram posts to share your products with millions of people.
             Let shoppers buy from your store without leaving Instagram.
           </p>

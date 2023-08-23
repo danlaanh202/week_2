@@ -51,12 +51,14 @@ const CreateTodoModal = ({ createTodo, createTodoLoading }) => {
         },
       ]}
       activator={
+        // trong khi đang chạy thì khách nhấn lung tung thì sao em ? thêm loading nữa nhé 
         <Button onClick={toggleModal} primary>
           Create todo
         </Button>
       }
     >
       <Modal.Section>
+        {/* todo: sao lại cần form submit thế này nhỉ ?  */}
         <form onSubmit={create}>
           <TextContainer>
             <TextField
@@ -65,6 +67,7 @@ const CreateTodoModal = ({ createTodo, createTodoLoading }) => {
               placeholder="Your next todo"
               autoFocus
             ></TextField>
+            {/* todo: có thể viết kiểu này <TextFields /> chứ không cần đóng task mở tag đâu  */}
           </TextContainer>
         </form>
       </Modal.Section>

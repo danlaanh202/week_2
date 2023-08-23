@@ -9,6 +9,8 @@ const router = new Router({
 
 // Routes will go here
 
+//todo: gộp lại thì chỉ cần 2 endpoints thay vì 4 endpoints như thế này nhé 
+
 router.get("/todoes", todoHandler.getTodoes);
 router.get("/todo/:id", todoHandler.getTodo);
 router.post("/todo", todoInputMiddleware, todoHandler.createTd);

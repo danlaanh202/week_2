@@ -61,6 +61,8 @@ export async function createTd(ctx) {
   }
 }
 
+//todo : chỗ này gộp lại như frontend nhé 
+
 export async function remove(ctx) {
   try {
     const { id } = ctx.params;

@@ -32,6 +32,7 @@ const MainContainer = () => {
       setCreateTodoLoading(false);
     }
   };
+  // todo : gốp tương tự như remove nhé 
   const toggleTodo = async (id) => {
     try {
       const { success } = await fetchData({
@@ -57,6 +58,7 @@ const MainContainer = () => {
       showToast("Error Toggle Todo");
     }
   };
+  //todo : gộp removeTodo và removeMultiTodo thành 1 thôi 2 cái bị thừa quá 
   const removeTodo = async (id) => {
     try {
       const { success } = await fetchData({
