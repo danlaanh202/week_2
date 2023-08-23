@@ -25,29 +25,29 @@ export function createTodo(data) {
   return updatedTodo;
 }
 
-export function removeTodo(id) {
-  const tempTodoes = [...todoes];
-  const result = tempTodoes.filter((item) => item.id !== id);
-  saveTodo(result);
-}
+// export function removeTodo(id) {
+//   const tempTodoes = [...todoes];
+//   const result = tempTodoes.filter((item) => item.id !== id);
+//   saveTodo(result);
+// }
 
-export function toggleTodo(id) {
-  const result = [...todoes].map((item) =>
-    item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
-  );
-  saveTodo(result);
-}
+// export function toggleTodo(id) {
+//   const result = [...todoes].map((item) =>
+//     item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
+//   );
+//   saveTodo(result);
+// }
 export function removeMultipleTodoes(ids) {
-  if (!ids || ids?.length === 0) {
-    removeTodoes();
+  if (!ids?.length) {
+    throw new Error();
   }
   const tempTodoes = [...todoes].filter((item) => !ids.includes(item.id));
   saveTodo(tempTodoes);
   return tempTodoes;
 }
 export function completeMultipleTodoes(ids) {
-  if (!ids) {
-    return;
+  if (!ids?.length) {
+    throw new Error();
   }
 
   const tempTodoes = [...todoes].map((item) =>

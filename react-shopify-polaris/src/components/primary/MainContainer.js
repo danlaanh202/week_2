@@ -6,7 +6,6 @@ import fetchData from "../../helpers/utils/requestApi";
 import useToast from "../../hooks/useToast";
 
 const MainContainer = () => {
-  const [createTodoLoading, setCreateTodoLoading] = useState(false);
   const { showToast } = useToast();
   const {
     data: todoes,
@@ -14,7 +13,6 @@ const MainContainer = () => {
     loading: getLoading,
   } = useFetchApi("/todoes");
   const createTodo = async (text) => {
-    setCreateTodoLoading(true);
     try {
       const { success, data } = await fetchData({
         method: "POST",
@@ -29,79 +27,18 @@ const MainContainer = () => {
     } catch (error) {
       throw new Error();
     } finally {
-      setCreateTodoLoading(false);
     }
   };
-  // todo : gốp tương tự như remove nhé 
-  const toggleTodo = async (id) => {
+
+  const toggleTodo = async (ids) => {
     try {
       const { success } = await fetchData({
-        url: `/todo/${id}`,
+        url: `/todoes`,
         method: "PUT",
+        data: { ids },
       });
       if (!success) {
         showToast("Remove error");
-        return;
-      }
-      setTodoes((prev) =>
-        prev.map((item) =>
-          item.id === id
-            ? {
-                ...item,
-                isCompleted: !item.isCompleted,
-              }
-            : item
-        )
-      );
-      return { success };
-    } catch (error) {
-      showToast("Error Toggle Todo");
-    }
-  };
-  //todo : gộp removeTodo và removeMultiTodo thành 1 thôi 2 cái bị thừa quá 
-  const removeTodo = async (id) => {
-    try {
-      const { success } = await fetchData({
-        url: `/todo/${id}`,
-        method: "DELETE",
-      });
-      if (!success) {
-        showToast("Remove todo error");
-      }
-      setTodoes((prev) => prev.filter((item) => item.id !== id));
-      return success;
-    } catch (error) {
-      showToast("Error remove todo");
-    }
-  };
-  const removeMultipleTodoes = async (ids) => {
-    try {
-      const { success } = await fetchData({
-        url: "/todoes",
-        data: { ids },
-        method: "DELETE",
-      });
-      if (!success) {
-        showToast("Remove error");
-        return;
-      }
-
-      setTodoes((prev) => [...prev].filter((item) => !ids.includes(item.id)));
-
-      return { success };
-    } catch (error) {
-      showToast("Error remove multiple");
-    }
-  };
-  const toggleMultipleTodoes = async (ids) => {
-    try {
-      const { success } = await fetchData({
-        url: "/todoes",
-        data: { ids },
-        method: "PUT",
-      });
-      if (!success) {
-        showToast("Failed calling api");
         return;
       }
       setTodoes((prev) =>
@@ -113,7 +50,24 @@ const MainContainer = () => {
       );
       return { success };
     } catch (error) {
-      showToast("Error toggle multiple");
+      showToast("Error Toggle Todo");
+    }
+  };
+
+  const removeTodo = async (ids) => {
+    try {
+      const { success } = await fetchData({
+        url: `/todoes`,
+        method: "DELETE",
+        data: { ids },
+      });
+      if (!success) {
+        showToast("Remove todo error");
+      }
+      setTodoes((prev) => [...prev].filter((item) => !ids.includes(item.id)));
+      return success;
+    } catch (error) {
+      showToast("Error remove todo");
     }
   };
 
@@ -123,14 +77,11 @@ const MainContainer = () => {
         <MainPage />
         <TodoTable
           fetchLoading={getLoading}
-          createTodoLoading={createTodoLoading}
           todoes={todoes}
           setTodoes={setTodoes}
           createTodo={createTodo}
           toggleTodo={toggleTodo}
           removeTodo={removeTodo}
-          removeMultipleTodoes={removeMultipleTodoes}
-          toggleMultipleTodoes={toggleMultipleTodoes}
         />
       </div>
     </div>
@@ -138,3 +89,45 @@ const MainContainer = () => {
 };
 
 export default MainContainer;
+// const removeMultipleTodoes = async (ids) => {
+//   try {
+//     const { success } = await fetchData({
+//       url: "/todoes",
+//       data: { ids },
+//       method: "DELETE",
+//     });
+//     if (!success) {
+//       showToast("Remove error");
+//       return;
+//     }
+
+//     setTodoes((prev) => [...prev].filter((item) => !ids.includes(item.id)));
+
+//     return { success };
+//   } catch (error) {
+//     showToast("Error remove multiple");
+//   }
+// };
+// const toggleMultipleTodoes = async (ids) => {
+//   try {
+//     const { success } = await fetchData({
+//       url: "/todoes",
+//       data: { ids },
+//       method: "PUT",
+//     });
+//     if (!success) {
+//       showToast("Failed calling api");
+//       return;
+//     }
+//     setTodoes((prev) =>
+//       [...prev].map((item) =>
+//         ids.includes(item.id)
+//           ? { ...item, isCompleted: !item.isCompleted }
+//           : item
+//       )
+//     );
+//     return { success };
+//   } catch (error) {
+//     showToast("Error toggle multiple");
+//   }
+// };

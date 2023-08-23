@@ -12,12 +12,11 @@ import useToast from "../../hooks/useToast";
 const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
-
   const toggleClick = async (id) => {
     if (loading) return;
     setLoading(true);
     try {
-      await toggleTodo(id);
+      await toggleTodo([id]);
     } catch (error) {
       showToast("Error toggle todo");
       setLoading(false);
@@ -29,7 +28,7 @@ const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
   const removeClick = async (id) => {
     setLoading(true);
     try {
-      await removeTodo(id);
+      await removeTodo([id]);
     } catch (error) {
       showToast("Error remove todo");
       setLoading(false);

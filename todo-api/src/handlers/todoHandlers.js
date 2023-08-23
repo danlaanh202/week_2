@@ -61,43 +61,10 @@ export async function createTd(ctx) {
   }
 }
 
-//todo : chỗ này gộp lại như frontend nhé 
-
-export async function remove(ctx) {
-  try {
-    const { id } = ctx.params;
-    removeTodo(id);
-    ctx.status = 200;
-    return (ctx.body = {
-      success: true,
-    });
-  } catch (error) {
-    return (ctx.body = {
-      success: false,
-      error: error.message,
-    });
-  }
-}
-
-export async function toggle(ctx) {
-  try {
-    const { id } = ctx.request.params;
-    toggleTodo(id);
-    ctx.status = 201;
-    return (ctx.body = {
-      success: true,
-    });
-  } catch (error) {
-    return (ctx.body = {
-      success: false,
-      error: error.message,
-    });
-  }
-}
-
-export async function completeMultiple(ctx) {
+export async function complete(ctx) {
   try {
     const { ids } = ctx.request.body;
+    console.log(ids);
     completeMultipleTodoes(ids);
     ctx.status = 201;
     return (ctx.body = {
@@ -110,7 +77,7 @@ export async function completeMultiple(ctx) {
     });
   }
 }
-export async function removeMultiple(ctx) {
+export async function remove(ctx) {
   try {
     const { ids } = ctx.request.body;
     removeMultipleTodoes(ids);
@@ -125,3 +92,35 @@ export async function removeMultiple(ctx) {
     });
   }
 }
+
+// export async function remove(ctx) {
+//   try {
+//     const { id } = ctx.params;
+//     removeTodo(id);
+//     ctx.status = 200;
+//     return (ctx.body = {
+//       success: true,
+//     });
+//   } catch (error) {
+//     return (ctx.body = {
+//       success: false,
+//       error: error.message,
+//     });
+//   }
+// }
+
+// export async function toggle(ctx) {
+//   try {
+//     const { id } = ctx.request.params;
+//     toggleTodo(id);
+//     ctx.status = 201;
+//     return (ctx.body = {
+//       success: true,
+//     });
+//   } catch (error) {
+//     return (ctx.body = {
+//       success: false,
+//       error: error.message,
+//     });
+//   }
+// }

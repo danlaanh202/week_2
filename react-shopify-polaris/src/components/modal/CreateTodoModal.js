@@ -8,14 +8,18 @@ import {
 } from "@shopify/polaris";
 import useToast from "../../hooks/useToast";
 
-const CreateTodoModal = ({ createTodo, createTodoLoading }) => {
+const CreateTodoModal = ({ createTodo }) => {
   const { showToast } = useToast();
+  const [createTodoLoading, setCreateTodoLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [inputVal, setInputVal] = useState("");
-
   const toggleModal = useCallback(() => setShowModal((prev) => !prev), []);
   const handleChange = useCallback((newValue) => setInputVal(newValue), []);
   const create = async (e) => {
+    if (createTodoLoading) {
+      return;
+    }
+    setCreateTodoLoading(true);
     try {
       e.preventDefault();
       if (!inputVal?.trim()) {
@@ -31,6 +35,8 @@ const CreateTodoModal = ({ createTodo, createTodoLoading }) => {
       toggleModal();
     } catch (error) {
       showToast("Can not create Todo");
+    } finally {
+      setCreateTodoLoading(false);
     }
   };
   return (
@@ -51,14 +57,13 @@ const CreateTodoModal = ({ createTodo, createTodoLoading }) => {
         },
       ]}
       activator={
-        // trong khi đang chạy thì khách nhấn lung tung thì sao em ? thêm loading nữa nhé 
-        <Button onClick={toggleModal} primary>
+        <Button onClick={toggleModal} disabled={createTodoLoading} primary>
           Create todo
         </Button>
       }
     >
       <Modal.Section>
-        {/* todo: sao lại cần form submit thế này nhỉ ?  */}
+        {/* e có dùng form ở đây để enter submit thay vì phải xử lý e.keyCode khi enter trong textField*/}
         <form onSubmit={create}>
           <TextContainer>
             <TextField
@@ -66,8 +71,7 @@ const CreateTodoModal = ({ createTodo, createTodoLoading }) => {
               onChange={handleChange}
               placeholder="Your next todo"
               autoFocus
-            ></TextField>
-            {/* todo: có thể viết kiểu này <TextFields /> chứ không cần đóng task mở tag đâu  */}
+            />
           </TextContainer>
         </form>
       </Modal.Section>

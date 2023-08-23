@@ -8,37 +8,34 @@ export default function TodoTable({
   todoes,
   createTodo,
   fetchLoading,
-  createTodoLoading,
-  removeMultipleTodoes,
-  toggleMultipleTodoes,
   toggleTodo,
   removeTodo,
 }) {
   const { showToast } = useToast();
   const [selectedItems, setSelectedItems] = useState([]);
-  const [multipleDeleteLoading, setMultipleDeleteLoading] = useState(false);
-  const [multipleToggleLoading, setMultipleToggleLoading] = useState(false);
-  const removeMultipleClick = async (ids) => {
-    if (multipleDeleteLoading) return;
-    setMultipleDeleteLoading(true);
+  const [deleteLoading, setDeleteLoadingg] = useState(false);
+  const [toggleLoading, setToggleLoading] = useState(false);
+  const removeClick = async (ids) => {
+    if (deleteLoading) return;
+    setDeleteLoadingg(true);
     try {
-      const { success } = await removeMultipleTodoes(ids);
+      const { success } = await removeTodo(ids);
       if (success) setSelectedItems([]);
     } catch (error) {
     } finally {
-      setMultipleDeleteLoading(false);
+      setDeleteLoadingg(false);
     }
   };
-  const toggleMultipleClick = async (ids) => {
-    if (multipleToggleLoading) return;
-    setMultipleToggleLoading(true);
+  const toggleClick = async (ids) => {
+    if (toggleLoading) return;
+    setToggleLoading(true);
     try {
-      const { success } = await toggleMultipleTodoes(ids);
+      const { success } = await toggleTodo(ids);
       if (success) setSelectedItems([]);
     } catch (error) {
       showToast("Error toggle multiple");
     } finally {
-      setMultipleToggleLoading(false);
+      setToggleLoading(false);
     }
   };
 
@@ -53,20 +50,14 @@ export default function TodoTable({
       image="https://cdn.shopify.com/s/files/1/2376/3301/products/emptystate-files.png"
     >
       <p style={{ marginBottom: 20 }}>Empty todo!!</p>
-      <CreateTodoModal
-        createTodo={createTodo}
-        createTodoLoading={createTodoLoading}
-      />
+      <CreateTodoModal createTodo={createTodo} />
     </EmptyState>
   ) : undefined;
 
   const filterControlMarkup = (
     <Stack alignment="center">
       <Stack.Item>
-        <CreateTodoModal
-          createTodo={createTodo}
-          createTodoLoading={createTodoLoading}
-        />
+        <CreateTodoModal createTodo={createTodo} />
       </Stack.Item>
     </Stack>
   );
@@ -84,13 +75,13 @@ export default function TodoTable({
         promotedBulkActions={[
           {
             content: "Toggle complete",
-            onAction: () => toggleMultipleClick(selectedItems),
-            disabled: multipleToggleLoading,
+            onAction: () => toggleClick(selectedItems),
+            disabled: toggleLoading,
           },
           {
             content: "Delete",
-            onAction: () => removeMultipleClick(selectedItems),
-            disabled: multipleDeleteLoading,
+            onAction: () => removeClick(selectedItems),
+            disabled: deleteLoading,
           },
         ]}
         renderItem={(item) => (
