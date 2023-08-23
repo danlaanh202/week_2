@@ -1,38 +1,23 @@
 import { useState } from "react";
 import Spinner from "../ui/Spinner";
-import fetchData from "../../helpers/utils/requestApi";
 
-const TodoForm = ({ setTodoes }) => {
+const TodoForm = ({ createTodo }) => {
   const [value, setValue] = useState("");
   const [postLoading, setPostLoading] = useState(false);
-  const createTodo = async (text) => {
-    setPostLoading(true);
-    try {
-      const { data, success } = await fetchData({
-        url: "/todo",
-        data: {
-          text,
-          isCompleted: false,
-        },
-        method: "POST",
-      });
-      if (success) {
-        setTodoes((prev) => [data, ...prev]);
-        setValue("");
-      }
-    } catch (error) {
-      alert("Can't create new todo");
-    } finally {
-      setPostLoading(false);
-    }
-  };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!value || !value?.trim()) {
       alert("Input mustn't be blank");
       return;
     }
-    createTodo(value);
+    setPostLoading(true);
+    try {
+      await createTodo(value, () => setValue(""));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setPostLoading(false);
+    }
   };
   return (
     <form className="todo-form" onSubmit={handleSubmit}>
@@ -42,7 +27,7 @@ const TodoForm = ({ setTodoes }) => {
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-      <button type="submit" className="submit-btn">
+      <button type="submit" className="submit-btn btn">
         {postLoading ? <Spinner /> : <span>Add to do</span>}
       </button>
     </form>

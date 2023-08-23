@@ -10,11 +10,13 @@ const router = new Router({
 // Routes will go here
 
 router.get("/todoes", todoHandler.getTodoes);
+router.get("/todo/:id", todoHandler.getTodo);
 router.post("/todo", todoInputMiddleware, todoHandler.createTd);
-router.put("/todo", todoHandler.toggle);
+router.put("/todo/:id", todoHandler.toggle);
 router.put("/todoes", todoHandler.completeMultiple);
 router.delete("/todo/:id", todoHandler.remove);
-router.post("/todoes", todoHandler.removeMultiple);
-// router.delele("/todoes", todoHandler.removeMultiple) //http://localhost:5000/todoes?ids=a&ids=b&...
+// router.delele("/todoes", todoHandler.removeMultiple);
+router.delete("/todoes", todoHandler.removeMultiple);
+//http://localhost:5000/todoes?ids=a&ids=b&...
 
 export default router;

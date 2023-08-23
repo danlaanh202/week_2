@@ -57,9 +57,15 @@ button {
     transform: rotate(360deg);
   }
 }
+
+.btn {
+  height: 26px;
+  max-height: 26px;
+  overflow: hidden;
+}
 .spinner {
-  width: 10px;
-  height: 10px;
+  width: 14px;
+  height: 14px;
   border: 1px solid black;
   border-right: 1px solid transparent;
   border-radius: 100%;

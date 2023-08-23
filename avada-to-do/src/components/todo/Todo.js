@@ -1,46 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import Spinner from "../ui/Spinner";
 
-import fetchData from "../../helpers/utils/requestApi";
-
-const Todo = ({ todo, setTodoes }) => {
+const Todo = ({ todo, toggleTodo, deleteTodo }) => {
   const [loading, setLoading] = useState(false);
-  const toggleTodo = async (id) => {
+
+  const toggleClick = async () => {
     if (loading) return;
     setLoading(true);
     try {
-      const { success } = await fetchData({
-        url: "/todo",
-        method: "PUT",
-        data: { id },
-      });
-      if (success) {
-        setTodoes((prev) =>
-          prev.map((item) =>
-            item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
-          )
-        );
-      }
+      await toggleTodo(todo.id);
     } catch (error) {
-      alert("Can not toggle todo");
+      console.log(error);
     } finally {
       setLoading(false);
     }
   };
 
-  const deleteTodo = async (id) => {
+  const deleteClick = async () => {
     if (loading) return;
     setLoading(true);
     try {
-      const { success } = await fetchData({
-        url: `/todo/${id}`,
-        method: "DELETE",
-      });
-
-      if (success) {
-        setTodoes((prev) => prev.filter((item) => item.id !== id));
-      }
+      await deleteTodo(todo.id);
     } catch (error) {
       alert("Something went wrong when delete");
     } finally {
@@ -56,16 +37,16 @@ const Todo = ({ todo, setTodoes }) => {
       >
         {todo?.text}
       </div>
-      <div className="btn-container">
-        <button onClick={() => toggleTodo(todo.id)}>
+      <div>
+        <button className="btn" onClick={toggleClick}>
           {loading ? (
             <Spinner />
           ) : (
             <span>{todo?.isCompleted ? "Undo" : "Complete"}</span>
           )}
         </button>
-        <button style={{ color: "red" }} onClick={() => deleteTodo(todo.id)}>
-          {loading ? <Spinner /> : <span>X</span>}
+        <button className="btn" style={{ color: "red" }} onClick={deleteClick}>
+          {loading ? <Spinner /> : <span>Delete</span>}
         </button>
       </div>
     </div>

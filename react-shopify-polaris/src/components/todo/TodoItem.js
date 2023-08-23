@@ -8,35 +8,16 @@ import {
 } from "@shopify/polaris";
 import React, { useState } from "react";
 import useToast from "../../hooks/useToast";
-import fetchData from "../../helpers/utils/requestApi";
 
-const TodoItem = ({ todo, setTodoes }) => {
+const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
 
-  const toggleTodo = async (id) => {
+  const toggleClick = async (id) => {
     if (loading) return;
     setLoading(true);
     try {
-      const { success } = await fetchData({
-        url: "/todo",
-        method: "PUT",
-        data: { id },
-      });
-      if (!success) {
-        showToast("Toggle error");
-        return;
-      }
-      setTodoes((prev) =>
-        prev.map((item) =>
-          item.id === id
-            ? {
-                ...item,
-                isCompleted: !item.isCompleted,
-              }
-            : item
-        )
-      );
+      await toggleTodo(id);
     } catch (error) {
       showToast("Error toggle todo");
       setLoading(false);
@@ -45,16 +26,10 @@ const TodoItem = ({ todo, setTodoes }) => {
     }
   };
 
-  const removeTodo = async (id) => {
+  const removeClick = async (id) => {
     setLoading(true);
     try {
-      const { success } = await fetchData({
-        url: `/todo/${id}`,
-        method: "DELETE",
-      });
-      if (success) {
-        setTodoes((prev) => prev.filter((item) => item.id !== id));
-      }
+      await removeTodo(id);
     } catch (error) {
       showToast("Error remove todo");
       setLoading(false);
@@ -76,7 +51,7 @@ const TodoItem = ({ todo, setTodoes }) => {
           </Badge>
 
           <Button
-            onClick={() => toggleTodo(todo.id)}
+            onClick={() => toggleClick(todo.id)}
             loading={loading}
             primary
             fullWidth
@@ -87,7 +62,7 @@ const TodoItem = ({ todo, setTodoes }) => {
             fullWidth
             loading={loading}
             disabled={loading}
-            onClick={() => removeTodo(todo.id)}
+            onClick={() => removeClick(todo.id)}
             destructive
           >
             Delete

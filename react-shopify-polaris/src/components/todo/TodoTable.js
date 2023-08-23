@@ -3,57 +3,38 @@ import { useState } from "react";
 import TodoItem from "./TodoItem";
 import CreateTodoModal from "../modal/CreateTodoModal";
 import useToast from "../../hooks/useToast";
-import fetchData from "../../helpers/utils/requestApi";
 
 export default function TodoTable({
   todoes,
-  setTodoes,
   createTodo,
   fetchLoading,
   createTodoLoading,
+  removeMultipleTodoes,
+  toggleMultipleTodoes,
+  toggleTodo,
+  removeTodo,
 }) {
   const { showToast } = useToast();
   const [selectedItems, setSelectedItems] = useState([]);
   const [multipleDeleteLoading, setMultipleDeleteLoading] = useState(false);
   const [multipleToggleLoading, setMultipleToggleLoading] = useState(false);
-
-  const removeTodoMultiple = async (ids) => {
+  const removeMultipleClick = async (ids) => {
+    if (multipleDeleteLoading) return;
     setMultipleDeleteLoading(true);
     try {
-      const { success } = await fetchData({
-        url: "/todoes",
-        data: { ids },
-        method: "POST",
-      });
-      if (success) {
-        setTodoes((prev) => [...prev].filter((item) => !ids.includes(item.id)));
-        setSelectedItems([]);
-      }
+      const { success } = await removeMultipleTodoes(ids);
+      if (success) setSelectedItems([]);
     } catch (error) {
-      setMultipleDeleteLoading(false);
-      showToast("Error remove multiple");
     } finally {
       setMultipleDeleteLoading(false);
     }
   };
-  const toggleTodoMultiple = async (ids) => {
+  const toggleMultipleClick = async (ids) => {
+    if (multipleToggleLoading) return;
     setMultipleToggleLoading(true);
     try {
-      const { success } = await fetchData({
-        url: "/todoes",
-        data: { ids },
-        method: "PUT",
-      });
-      if (!success) {
-        showToast("Failed calling api");
-        return;
-      }
-      setTodoes((prev) =>
-        [...prev].map((item) =>
-          ids.includes(item.id) ? { ...item, isCompleted: true } : item
-        )
-      );
-      setSelectedItems([]);
+      const { success } = await toggleMultipleTodoes(ids);
+      if (success) setSelectedItems([]);
     } catch (error) {
       showToast("Error toggle multiple");
     } finally {
@@ -102,17 +83,23 @@ export default function TodoTable({
         emptyState={emptyStateMarkup}
         promotedBulkActions={[
           {
-            content: "Complete",
-            onAction: () => toggleTodoMultiple(selectedItems),
+            content: "Toggle complete",
+            onAction: () => toggleMultipleClick(selectedItems),
             disabled: multipleToggleLoading,
           },
           {
             content: "Delete",
-            onAction: () => removeTodoMultiple(selectedItems),
+            onAction: () => removeMultipleClick(selectedItems),
             disabled: multipleDeleteLoading,
           },
         ]}
-        renderItem={(item) => <TodoItem setTodoes={setTodoes} todo={item} />}
+        renderItem={(item) => (
+          <TodoItem
+            todo={item}
+            toggleTodo={toggleTodo}
+            removeTodo={removeTodo}
+          />
+        )}
         selectable
       />
     </Card>

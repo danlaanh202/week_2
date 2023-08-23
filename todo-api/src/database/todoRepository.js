@@ -10,7 +10,9 @@ function saveTodo(data) {
     })
   );
 }
-
+export function getTodoById(id) {
+  return todoes.find((item) => item.id === id);
+}
 export function getAllTodoes() {
   return todoes;
 }
@@ -49,7 +51,7 @@ export function completeMultipleTodoes(ids) {
   }
 
   const tempTodoes = [...todoes].map((item) =>
-    ids.includes(item.id) ? { ...item, isCompleted: true } : item
+    ids.includes(item.id) ? { ...item, isCompleted: !item.isCompleted } : item
   );
   saveTodo(tempTodoes);
 }

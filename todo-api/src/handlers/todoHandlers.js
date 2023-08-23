@@ -1,4 +1,5 @@
 import {
+  getTodoById,
   createTodo,
   getAllTodoes,
   removeTodo,
@@ -7,6 +8,23 @@ import {
   completeMultipleTodoes,
 } from "../database/todoRepository";
 
+export async function getTodo(ctx) {
+  try {
+    const { id } = ctx.request.params;
+    const todo = getTodoById(id);
+    return (ctx.body = {
+      data: todo,
+      success: true,
+    });
+  } catch (error) {
+    ctx.status = 500;
+    return (ctx.body = {
+      success: false,
+      data: [],
+      error: e.message,
+    });
+  }
+}
 export async function getTodoes(ctx) {
   try {
     const todoes = getAllTodoes();
@@ -60,10 +78,8 @@ export async function remove(ctx) {
 }
 
 export async function toggle(ctx) {
-  // console.log(ctx.request.body);
   try {
-    const { id } = ctx.request.body;
-    console.log(id);
+    const { id } = ctx.request.params;
     toggleTodo(id);
     ctx.status = 201;
     return (ctx.body = {
@@ -93,7 +109,6 @@ export async function completeMultiple(ctx) {
   }
 }
 export async function removeMultiple(ctx) {
-  // POST METHOD
   try {
     const { ids } = ctx.request.body;
     removeMultipleTodoes(ids);

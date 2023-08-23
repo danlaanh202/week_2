@@ -16,6 +16,19 @@ export default function App() {
           accessibilityLabel: "Logo",
         },
       }}
+      i18n={{
+        Polaris: {
+          ResourceList: {
+            sortingLabel: "Sort by",
+            defaultItemSingular: "item",
+            defaultItemPlural: "items",
+            showing: "Showing {itemsCount} {resource}",
+            Item: {
+              viewItem: "View details for {itemName}",
+            },
+          },
+        },
+      }}
     >
       <ToastProvider>
         <AppLayout>
