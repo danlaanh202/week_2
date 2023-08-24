@@ -20,7 +20,7 @@ const MainContainer = () => {
           text,
           isCompleted: false,
         },
-        url: "/todo",
+        path: "/todo",
       });
       setTodoes((prev) => [data, ...prev]);
       return { success };
@@ -33,7 +33,7 @@ const MainContainer = () => {
   const toggleTodo = async (ids) => {
     try {
       const { success } = await fetchData({
-        url: `/todoes`,
+        path: `/todoes`,
         method: "PUT",
         data: { ids },
       });
@@ -57,7 +57,7 @@ const MainContainer = () => {
   const removeTodo = async (ids) => {
     try {
       const { success } = await fetchData({
-        url: `/todoes`,
+        path: `/todoes`,
         method: "DELETE",
         data: { ids },
       });

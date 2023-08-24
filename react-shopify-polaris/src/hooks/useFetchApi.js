@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { ROOT_API } from "../helpers/constants/apiConstants";
 
-const useFetchApi = (path) => {
+const useFetchApi = (path = "", url = ROOT_API) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${ROOT_API}${path}`);
+      const fetchUrl = url + path;
+      const response = await fetch(fetchUrl);
       const responseData = await response.json();
       setData(responseData.data);
       setLoading(false);

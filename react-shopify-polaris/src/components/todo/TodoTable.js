@@ -39,17 +39,12 @@ export default function TodoTable({
     }
   };
 
-  //todo: hình như chỉ cần todos chứ không phải todoes thì phải 
-
   const resourceName = {
     singular: "todo",
-    plural: "todoes",
+    plural: "todos",
   };
 
-
-  //todo: không lại phải làm như này nhỉ ? anh thấy là chỉ cần truyền component vào rồi resource list nó sẽ tự check để hiển thị chứ nhỉ ?
-  
-  const emptyStateMarkup = !todoes.length ? (
+  const emptyStateMarkup = (
     <EmptyState
       heading="Create todo to get started"
       image="https://cdn.shopify.com/s/files/1/2376/3301/products/emptystate-files.png"
@@ -57,7 +52,7 @@ export default function TodoTable({
       <p style={{ marginBottom: 20 }}>Empty todo!!</p>
       <CreateTodoModal createTodo={createTodo} />
     </EmptyState>
-  ) : undefined;
+  );
 
   const filterControlMarkup = (
     <Stack alignment="center">
