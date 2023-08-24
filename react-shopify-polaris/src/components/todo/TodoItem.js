@@ -10,6 +10,7 @@ import React, { useState } from "react";
 import useToast from "../../hooks/useToast";
 
 const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
+
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
   const toggleClick = async (id) => {

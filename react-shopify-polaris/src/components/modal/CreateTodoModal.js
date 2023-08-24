@@ -63,6 +63,7 @@ const CreateTodoModal = ({ createTodo }) => {
       }
     >
       <Modal.Section>
+        {/* todo: có yêu cầu dùng enter hở :3 chứ thường bọn anh sẽ khồn dặt form vào như này đâu trông nó không oke cho lắm ấy  */}
         {/* e có dùng form ở đây để enter submit thay vì phải xử lý e.keyCode khi enter trong textField*/}
         <form onSubmit={create}>
           <TextContainer>

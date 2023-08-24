@@ -39,11 +39,16 @@ export default function TodoTable({
     }
   };
 
+  //todo: hình như chỉ cần todos chứ không phải todoes thì phải 
+
   const resourceName = {
     singular: "todo",
     plural: "todoes",
   };
 
+
+  //todo: không lại phải làm như này nhỉ ? anh thấy là chỉ cần truyền component vào rồi resource list nó sẽ tự check để hiển thị chứ nhỉ ?
+  
   const emptyStateMarkup = !todoes.length ? (
     <EmptyState
       heading="Create todo to get started"
