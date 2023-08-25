@@ -1,11 +1,11 @@
 import { ResourceList, Card, EmptyState, Stack } from "@shopify/polaris";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TodoItem from "./TodoItem";
 import CreateTodoModal from "../modal/CreateTodoModal";
 import useToast from "../../hooks/useToast";
 
 export default function TodoTable({
-  todoes,
+  todos,
   createTodo,
   fetchLoading,
   toggleTodo,
@@ -13,29 +13,28 @@ export default function TodoTable({
 }) {
   const { showToast } = useToast();
   const [selectedItems, setSelectedItems] = useState([]);
-  const [deleteLoading, setDeleteLoadingg] = useState(false);
-  const [toggleLoading, setToggleLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const removeClick = async (ids) => {
-    if (deleteLoading) return;
-    setDeleteLoadingg(true);
+    if (isLoading) return;
+    setIsLoading(true);
     try {
       const { success } = await removeTodo(ids);
       if (success) setSelectedItems([]);
     } catch (error) {
     } finally {
-      setDeleteLoadingg(false);
+      setIsLoading(false);
     }
   };
   const toggleClick = async (ids) => {
-    if (toggleLoading) return;
-    setToggleLoading(true);
+    if (isLoading) return;
+    setIsLoading(true);
     try {
       const { success } = await toggleTodo(ids);
       if (success) setSelectedItems([]);
     } catch (error) {
       showToast("Error toggle multiple");
     } finally {
-      setToggleLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -61,27 +60,34 @@ export default function TodoTable({
       </Stack.Item>
     </Stack>
   );
-
+  useEffect(() => {
+    console.log(selectedItems);
+  }, [selectedItems]);
   return (
     <Card>
       <ResourceList
         filterControl={filterControlMarkup}
         resourceName={resourceName}
-        items={todoes}
+        items={todos}
         loading={fetchLoading}
         selectedItems={selectedItems}
-        onSelectionChange={setSelectedItems}
+        onSelectionChange={(selectedIts) => {
+          if (isLoading) {
+            return;
+          }
+          setSelectedItems(selectedIts);
+        }}
         emptyState={emptyStateMarkup}
         promotedBulkActions={[
           {
             content: "Toggle complete",
             onAction: () => toggleClick(selectedItems),
-            disabled: toggleLoading,
+            disabled: isLoading,
           },
           {
             content: "Delete",
             onAction: () => removeClick(selectedItems),
-            disabled: deleteLoading,
+            disabled: isLoading,
           },
         ]}
         renderItem={(item) => (
@@ -89,6 +95,7 @@ export default function TodoTable({
             todo={item}
             toggleTodo={toggleTodo}
             removeTodo={removeTodo}
+            isDisabled={isLoading && selectedItems.includes(item.id)}
           />
         )}
         selectable

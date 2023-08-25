@@ -1,11 +1,11 @@
 import {
   getTodoById,
   createTodo,
-  getAllTodoes,
+  getAlltodos,
   removeTodo,
-  removeMultipleTodoes,
+  removeMultipletodos,
   toggleTodo,
-  completeMultipleTodoes,
+  completeMultipletodos,
 } from "../database/todoRepository";
 
 export async function getTodo(ctx) {
@@ -25,13 +25,13 @@ export async function getTodo(ctx) {
     });
   }
 }
-export async function getTodoes(ctx) {
+export async function gettodos(ctx) {
   try {
-    const todoes = getAllTodoes();
+    const todos = getAlltodos();
     ctx.status = 200;
 
     return (ctx.body = {
-      data: todoes,
+      data: todos,
       success: true,
     });
   } catch (e) {
@@ -65,7 +65,7 @@ export async function complete(ctx) {
   try {
     const { ids } = ctx.request.body;
     console.log(ids);
-    completeMultipleTodoes(ids);
+    completeMultipletodos(ids);
     ctx.status = 201;
     return (ctx.body = {
       success: true,
@@ -80,7 +80,7 @@ export async function complete(ctx) {
 export async function remove(ctx) {
   try {
     const { ids } = ctx.request.body;
-    removeMultipleTodoes(ids);
+    removeMultipletodos(ids);
     ctx.status = 200;
     return (ctx.body = {
       success: true,

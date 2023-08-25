@@ -9,12 +9,11 @@ import {
 import React, { useState } from "react";
 import useToast from "../../hooks/useToast";
 
-const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
-
+const TodoItem = ({ todo, toggleTodo, removeTodo, isDisabled }) => {
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
-  const toggleClick = async (id) => {
-    if (loading) return;
+  const toggle = async (id) => {
+    if (loading || isDisabled) return;
     setLoading(true);
     try {
       await toggleTodo([id]);
@@ -26,7 +25,8 @@ const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
     }
   };
 
-  const removeClick = async (id) => {
+  const remove = async (id) => {
+    if (loading || isDisabled) return;
     setLoading(true);
     try {
       await removeTodo([id]);
@@ -51,7 +51,7 @@ const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
           </Badge>
 
           <Button
-            onClick={() => toggleClick(todo.id)}
+            onClick={() => toggle(todo.id)}
             loading={loading}
             primary
             fullWidth
@@ -61,8 +61,7 @@ const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
           <Button
             fullWidth
             loading={loading}
-            disabled={loading}
-            onClick={() => removeClick(todo.id)}
+            onClick={() => remove(todo.id)}
             destructive
           >
             Delete

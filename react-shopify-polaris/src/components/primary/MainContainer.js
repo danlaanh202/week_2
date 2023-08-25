@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import MainPage from "./MainPage";
 import TodoTable from "../todo/TodoTable";
 import useFetchApi from "../../hooks/useFetchApi";
@@ -8,10 +7,10 @@ import useToast from "../../hooks/useToast";
 const MainContainer = () => {
   const { showToast } = useToast();
   const {
-    data: todoes,
-    setData: setTodoes,
+    data: todos,
+    setData: setTodos,
     loading: getLoading,
-  } = useFetchApi("/todoes");
+  } = useFetchApi("/todos");
   const createTodo = async (text) => {
     try {
       const { success, data } = await fetchData({
@@ -22,7 +21,7 @@ const MainContainer = () => {
         },
         path: "/todo",
       });
-      setTodoes((prev) => [data, ...prev]);
+      setTodos((prev) => [data, ...prev]);
       return { success };
     } catch (error) {
       throw new Error();
@@ -33,7 +32,7 @@ const MainContainer = () => {
   const toggleTodo = async (ids) => {
     try {
       const { success } = await fetchData({
-        path: `/todoes`,
+        path: `/todos`,
         method: "PUT",
         data: { ids },
       });
@@ -41,7 +40,7 @@ const MainContainer = () => {
         showToast("Remove error");
         return;
       }
-      setTodoes((prev) =>
+      setTodos((prev) =>
         [...prev].map((item) =>
           ids.includes(item.id)
             ? { ...item, isCompleted: !item.isCompleted }
@@ -57,14 +56,14 @@ const MainContainer = () => {
   const removeTodo = async (ids) => {
     try {
       const { success } = await fetchData({
-        path: `/todoes`,
+        path: `/todos`,
         method: "DELETE",
         data: { ids },
       });
       if (!success) {
         showToast("Remove todo error");
       }
-      setTodoes((prev) => [...prev].filter((item) => !ids.includes(item.id)));
+      setTodos((prev) => [...prev].filter((item) => !ids.includes(item.id)));
       return success;
     } catch (error) {
       showToast("Error remove todo");
@@ -77,8 +76,8 @@ const MainContainer = () => {
         <MainPage />
         <TodoTable
           fetchLoading={getLoading}
-          todoes={todoes}
-          setTodoes={setTodoes}
+          todos={todos}
+          setTodos={setTodos}
           createTodo={createTodo}
           toggleTodo={toggleTodo}
           removeTodo={removeTodo}
@@ -89,10 +88,10 @@ const MainContainer = () => {
 };
 
 export default MainContainer;
-// const removeMultipleTodoes = async (ids) => {
+// const removeMultipletodos = async (ids) => {
 //   try {
 //     const { success } = await fetchData({
-//       url: "/todoes",
+//       url: "/todos",
 //       data: { ids },
 //       method: "DELETE",
 //     });
@@ -101,17 +100,17 @@ export default MainContainer;
 //       return;
 //     }
 
-//     setTodoes((prev) => [...prev].filter((item) => !ids.includes(item.id)));
+//     setTodos((prev) => [...prev].filter((item) => !ids.includes(item.id)));
 
 //     return { success };
 //   } catch (error) {
 //     showToast("Error remove multiple");
 //   }
 // };
-// const toggleMultipleTodoes = async (ids) => {
+// const toggleMultipletodos = async (ids) => {
 //   try {
 //     const { success } = await fetchData({
-//       url: "/todoes",
+//       url: "/todos",
 //       data: { ids },
 //       method: "PUT",
 //     });
@@ -119,7 +118,7 @@ export default MainContainer;
 //       showToast("Failed calling api");
 //       return;
 //     }
-//     setTodoes((prev) =>
+//     setTodos((prev) =>
 //       [...prev].map((item) =>
 //         ids.includes(item.id)
 //           ? { ...item, isCompleted: !item.isCompleted }

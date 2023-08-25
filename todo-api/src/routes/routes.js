@@ -9,11 +9,11 @@ const router = new Router({
 
 // Routes will go here
 
-router.get("/todoes", todoHandler.getTodoes);
+router.get("/todos", todoHandler.gettodos);
 router.get("/todo/:id", todoHandler.getTodo);
 router.post("/todo", todoInputMiddleware, todoHandler.createTd);
-router.put("/todoes", todoHandler.complete);
-router.delete("/todoes", todoHandler.remove);
+router.put("/todos", todoHandler.complete);
+router.delete("/todos", todoHandler.remove);
 
 // router.delete("/todo/:id", todoHandler.remove);
 // router.put("/todo/:id", todoHandler.toggle);

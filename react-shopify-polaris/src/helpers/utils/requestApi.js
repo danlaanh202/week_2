@@ -5,10 +5,8 @@ async function fetchData({
   path = "",
   method = "GET",
   data = {},
-  isFetchApi = true,
 }) {
-  const baseUrl = url ?? ROOT_API;
-  const fetchUrl = isFetchApi ? baseUrl + path : path;
+  const fetchUrl = url + path;
   const requestConfig = {
     body: JSON.stringify(data),
     method,

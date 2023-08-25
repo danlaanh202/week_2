@@ -1,61 +1,61 @@
-const { data: todoes } = require("./todoes.json");
+const { data: todos } = require("./todos.json");
 import fs from "fs";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 function saveTodo(data) {
   fs.writeFileSync(
-    path.join(__dirname, "/todoes.json"),
+    path.join(__dirname, "/todos.json"),
     JSON.stringify({
       data,
     })
   );
 }
 export function getTodoById(id) {
-  return todoes.find((item) => item.id === id);
+  return todos.find((item) => item.id === id);
 }
-export function getAllTodoes() {
-  return todoes;
+export function getAlltodos() {
+  return todos;
 }
 
 export function createTodo(data) {
   const generatedId = uuidv4();
   const updatedTodo = { ...data, id: generatedId };
-  const updatedTodoes = [updatedTodo, ...todoes];
-  saveTodo(updatedTodoes);
+  const updatedtodos = [updatedTodo, ...todos];
+  saveTodo(updatedtodos);
   return updatedTodo;
 }
 
 // export function removeTodo(id) {
-//   const tempTodoes = [...todoes];
-//   const result = tempTodoes.filter((item) => item.id !== id);
+//   const temptodos = [...todos];
+//   const result = temptodos.filter((item) => item.id !== id);
 //   saveTodo(result);
 // }
 
 // export function toggleTodo(id) {
-//   const result = [...todoes].map((item) =>
+//   const result = [...todos].map((item) =>
 //     item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
 //   );
 //   saveTodo(result);
 // }
-export function removeMultipleTodoes(ids) {
+export function removeMultipletodos(ids) {
   if (!ids?.length) {
     throw new Error();
   }
-  const tempTodoes = [...todoes].filter((item) => !ids.includes(item.id));
-  saveTodo(tempTodoes);
-  return tempTodoes;
+  const temptodos = [...todos].filter((item) => !ids.includes(item.id));
+  saveTodo(temptodos);
+  return temptodos;
 }
-export function completeMultipleTodoes(ids) {
+export function completeMultipletodos(ids) {
   if (!ids?.length) {
     throw new Error();
   }
 
-  const tempTodoes = [...todoes].map((item) =>
+  const temptodos = [...todos].map((item) =>
     ids.includes(item.id) ? { ...item, isCompleted: !item.isCompleted } : item
   );
-  saveTodo(tempTodoes);
+  saveTodo(temptodos);
 }
 
-export function removeTodoes() {
+export function removetodos() {
   saveTodo([]);
 }

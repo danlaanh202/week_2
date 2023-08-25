@@ -23,7 +23,7 @@ const useFetchApi = (path = "", url = ROOT_API) => {
   useEffect(() => {
     fetchData();
   }, []);
-  return { data, setData, loading };
+  return { data, setData, loading, setLoading };
 };
 
 export default useFetchApi;

@@ -5,7 +5,7 @@ import useFetchApi from "../../hooks/useFetchApi";
 import fetchData from "../../helpers/utils/requestApi";
 
 const App = () => {
-  const { data: todoes, setData: setTodoes } = useFetchApi("/todoes");
+  const { data: todos, setData: setTodos } = useFetchApi("/todos");
 
   const createTodo = async (text, callback) => {
     try {
@@ -18,7 +18,7 @@ const App = () => {
         method: "POST",
       });
       if (success) {
-        setTodoes((prev) => [data, ...prev]);
+        setTodos((prev) => [data, ...prev]);
         callback();
       }
     } catch (error) {
@@ -32,7 +32,7 @@ const App = () => {
         method: "PUT",
       });
       if (success) {
-        setTodoes((prev) =>
+        setTodos((prev) =>
           prev.map((item) =>
             item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
           )
@@ -49,7 +49,7 @@ const App = () => {
         method: "DELETE",
       });
       if (success) {
-        setTodoes((prev) => prev.filter((item) => item.id !== id));
+        setTodos((prev) => prev.filter((item) => item.id !== id));
       }
     } catch (error) {
       alert("Something went wrong when delete");
@@ -59,8 +59,8 @@ const App = () => {
   return (
     <div className="app">
       <div className="todo-list">
-        {todoes?.length > 0 &&
-          todoes.map((todo) => (
+        {todos?.length > 0 &&
+          todos.map((todo) => (
             <Todo
               key={todo.id}
               todo={todo}
