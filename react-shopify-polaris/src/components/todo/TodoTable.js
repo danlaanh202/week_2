@@ -14,25 +14,14 @@ export default function TodoTable({
   const { showToast } = useToast();
   const [selectedItems, setSelectedItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const removeClick = async (ids) => {
+  const handleClick = async (ids, callback) => {
     if (isLoading) return;
     setIsLoading(true);
     try {
-      const { success } = await removeTodo(ids);
+      const { success } = await callback(ids);
       if (success) setSelectedItems([]);
     } catch (error) {
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  const toggleClick = async (ids) => {
-    if (isLoading) return;
-    setIsLoading(true);
-    try {
-      const { success } = await toggleTodo(ids);
-      if (success) setSelectedItems([]);
-    } catch (error) {
-      showToast("Error toggle multiple");
+      showToast("Error");
     } finally {
       setIsLoading(false);
     }
@@ -81,12 +70,12 @@ export default function TodoTable({
         promotedBulkActions={[
           {
             content: "Toggle complete",
-            onAction: () => toggleClick(selectedItems),
+            onAction: () => handleClick(selectedItems, toggleTodo),
             disabled: isLoading,
           },
           {
             content: "Delete",
-            onAction: () => removeClick(selectedItems),
+            onAction: () => handleClick(selectedItems, removeTodo),
             disabled: isLoading,
           },
         ]}
