@@ -2,6 +2,7 @@ const { data: todos } = require("./todos.json");
 import fs from "fs";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
+
 function saveTodo(data) {
   fs.writeFileSync(
     path.join(__dirname, "/todos.json"),
@@ -10,9 +11,11 @@ function saveTodo(data) {
     })
   );
 }
+
 export function getTodoById(id) {
   return todos.find((item) => item.id === id);
 }
+
 export function getAlltodos() {
   return todos;
 }
@@ -25,23 +28,13 @@ export function createTodo(data) {
   return updatedTodo;
 }
 
-// export function removeTodo(id) {
-//   const temptodos = [...todos];
-//   const result = temptodos.filter((item) => item.id !== id);
-//   saveTodo(result);
-// }
-
-// export function toggleTodo(id) {
-//   const result = [...todos].map((item) =>
-//     item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
-//   );
-//   saveTodo(result);
-// }
-export function removeMultipletodos(ids) {
+export async function removeMultipletodos(ids) {
   if (!ids?.length) {
     throw new Error();
   }
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
   const temptodos = [...todos].filter((item) => !ids.includes(item.id));
+  await delay(2000);
   saveTodo(temptodos);
   return temptodos;
 }

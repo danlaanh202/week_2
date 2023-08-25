@@ -64,7 +64,7 @@ const MainContainer = () => {
         showToast("Remove todo error");
       }
       setTodos((prev) => [...prev].filter((item) => !ids.includes(item.id)));
-      return success;
+      return { success };
     } catch (error) {
       showToast("Error remove todo");
     }

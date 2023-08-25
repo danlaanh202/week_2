@@ -49,9 +49,7 @@ export default function TodoTable({
       </Stack.Item>
     </Stack>
   );
-  useEffect(() => {
-    console.log(selectedItems);
-  }, [selectedItems]);
+
   return (
     <Card>
       <ResourceList
@@ -60,12 +58,7 @@ export default function TodoTable({
         items={todos}
         loading={fetchLoading}
         selectedItems={selectedItems}
-        onSelectionChange={(sItems) => {
-          if (isLoading) {
-            return;
-          }
-          setSelectedItems(sItems);
-        }}
+        onSelectionChange={setSelectedItems}
         emptyState={emptyStateMarkup}
         promotedBulkActions={[
           {
