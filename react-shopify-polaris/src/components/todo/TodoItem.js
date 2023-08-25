@@ -9,14 +9,14 @@ import {
 import React, { useState } from "react";
 import useToast from "../../hooks/useToast";
 
-const TodoItem = ({ todo, toggleTodo, removeTodo, isDisabled }) => {
+const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
   const handleClick = async (id, callback) => {
-    if (loading || isDisabled) return;
+    if (loading) return;
     setLoading(true);
     try {
-      await callback([id]);
+      await callback(id);
     } catch (error) {
       showToast("Error");
       setLoading(false);
@@ -40,7 +40,7 @@ const TodoItem = ({ todo, toggleTodo, removeTodo, isDisabled }) => {
           <Button
             onClick={() => handleClick(todo.id, toggleTodo)}
             loading={loading}
-            primary
+            primary={!todo.isCompleted}
             fullWidth
           >
             {todo.isCompleted ? "Undo" : "Complete"}

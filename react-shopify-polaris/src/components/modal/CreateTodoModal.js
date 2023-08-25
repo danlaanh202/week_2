@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Modal,
@@ -11,21 +11,22 @@ import useToast from "../../hooks/useToast";
 const CreateTodoModal = ({ createTodo }) => {
   const { showToast } = useToast();
   const [createTodoLoading, setCreateTodoLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [inputVal, setInputVal] = useState("");
   const toggleModal = useCallback(() => setShowModal((prev) => !prev), []);
   const handleChange = useCallback((newValue) => setInputVal(newValue), []);
   const create = async (e) => {
+    e.preventDefault();
+    if (!inputVal?.trim()) {
+      setHasError(true);
+      return;
+    }
     if (createTodoLoading) {
       return;
     }
     setCreateTodoLoading(true);
     try {
-      e.preventDefault();
-      if (!inputVal?.trim()) {
-        showToast("Input mustn't be blank");
-        return;
-      }
       const { success } = await createTodo(inputVal);
       if (!success) {
         showToast("Failed");
@@ -39,6 +40,11 @@ const CreateTodoModal = ({ createTodo }) => {
       setCreateTodoLoading(false);
     }
   };
+  useEffect(() => {
+    if (inputVal?.trim()) {
+      setHasError(false);
+    }
+  }, [inputVal]);
   return (
     <Modal
       onClose={toggleModal}
@@ -63,14 +69,17 @@ const CreateTodoModal = ({ createTodo }) => {
       }
     >
       <Modal.Section>
-        <TextContainer>
-          <TextField
-            value={inputVal}
-            onChange={handleChange}
-            placeholder="Your next todo"
-            autoFocus
-          />
-        </TextContainer>
+        <form onSubmit={create}>
+          <TextContainer>
+            <TextField
+              error={hasError && "Input mustn't be blank"}
+              value={inputVal}
+              onChange={handleChange}
+              placeholder="Your next todo"
+              autoFocus
+            />
+          </TextContainer>
+        </form>
       </Modal.Section>
     </Modal>
   );

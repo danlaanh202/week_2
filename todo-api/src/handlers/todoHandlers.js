@@ -2,6 +2,8 @@ import {
   getTodoById,
   createTodo,
   getAlltodos,
+  toggleTodo,
+  removeTodo,
   removeMultipletodos,
   completeMultipletodos,
 } from "../database/todoRepository";
@@ -23,7 +25,7 @@ export async function getTodo(ctx) {
     });
   }
 }
-export async function gettodos(ctx) {
+export async function getTodos(ctx) {
   try {
     const todos = getAlltodos();
     ctx.status = 200;
@@ -59,7 +61,36 @@ export async function createTd(ctx) {
   }
 }
 
-export async function complete(ctx) {
+export async function toggle(ctx) {
+  try {
+    const { id } = ctx.request.params;
+    toggleTodo(id);
+    ctx.status = 200;
+    return (ctx.body = {
+      success: true,
+    });
+  } catch (error) {
+    return (ctx.body = {
+      success: false,
+      error: error.message,
+    });
+  }
+}
+export async function remove(ctx) {
+  try {
+    const { id } = ctx.request.params;
+    removeTodo(id);
+    return (ctx.body = {
+      success: true,
+    });
+  } catch (error) {
+    return (ctx.body = {
+      success: false,
+      error: error.message,
+    });
+  }
+}
+export async function toggleMultiple(ctx) {
   try {
     const { ids } = ctx.request.body;
     completeMultipletodos(ids);
@@ -74,7 +105,7 @@ export async function complete(ctx) {
     });
   }
 }
-export async function remove(ctx) {
+export async function removeMultiple(ctx) {
   try {
     const { ids } = ctx.request.body;
     await removeMultipletodos(ids);

@@ -23,16 +23,26 @@ export function getAlltodos() {
 export function createTodo(data) {
   const generatedId = uuidv4();
   const updatedTodo = { ...data, id: generatedId };
-  const updatedtodos = [updatedTodo, ...todos];
+  const updatedtodos = [{ ...data, id: generatedId }, ...todos];
   saveTodo(updatedtodos);
   return updatedTodo;
+}
+export async function toggleTodo(id) {
+  const tempTodos = todos.map((item) =>
+    item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
+  );
+  return tempTodos;
+}
+export async function removeTodo(id) {
+  const tempTodos = todos.filter((item) => item.id !== id);
+  return tempTodos;
 }
 
 export async function removeMultipletodos(ids) {
   if (!ids?.length) {
     throw new Error();
   }
-  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
   const temptodos = [...todos].filter((item) => !ids.includes(item.id));
   await delay(2000);
   saveTodo(temptodos);
