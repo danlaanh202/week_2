@@ -71,11 +71,11 @@ export default function TodoTable({
         items={todos}
         loading={fetchLoading}
         selectedItems={selectedItems}
-        onSelectionChange={(selectedIts) => {
+        onSelectionChange={(sItems) => {
           if (isLoading) {
             return;
           }
-          setSelectedItems(selectedIts);
+          setSelectedItems(sItems);
         }}
         emptyState={emptyStateMarkup}
         promotedBulkActions={[
@@ -95,7 +95,7 @@ export default function TodoTable({
             todo={item}
             toggleTodo={toggleTodo}
             removeTodo={removeTodo}
-            isDisabled={isLoading && selectedItems.includes(item.id)}
+            isDisabled={isLoading}
           />
         )}
         selectable
