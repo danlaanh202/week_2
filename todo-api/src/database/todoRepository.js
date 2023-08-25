@@ -25,18 +25,6 @@ export function createTodo(data) {
   return updatedTodo;
 }
 
-// export function removeTodo(id) {
-//   const temptodos = [...todos];
-//   const result = temptodos.filter((item) => item.id !== id);
-//   saveTodo(result);
-// }
-
-// export function toggleTodo(id) {
-//   const result = [...todos].map((item) =>
-//     item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
-//   );
-//   saveTodo(result);
-// }
 export function removeMultipletodos(ids) {
   if (!ids?.length) {
     throw new Error();

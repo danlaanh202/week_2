@@ -49,6 +49,7 @@ export default function TodoTable({
       </Stack.Item>
     </Stack>
   );
+  //todo: bỏ cái này đi nhé 
   useEffect(() => {
     console.log(selectedItems);
   }, [selectedItems]);
