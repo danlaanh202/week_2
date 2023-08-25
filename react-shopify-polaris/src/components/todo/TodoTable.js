@@ -49,7 +49,6 @@ export default function TodoTable({
       </Stack.Item>
     </Stack>
   );
-
   return (
     <Card>
       <ResourceList
