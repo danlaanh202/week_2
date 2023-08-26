@@ -24,7 +24,6 @@ function MainPage() {
       return { success };
     } catch (error) {
       throw new Error();
-    } finally {
     }
   };
 
@@ -85,6 +84,7 @@ function MainPage() {
     if (isLoading) {
       return;
     }
+    setIsLoading(true);
     try {
       const { success } = await TodoRequest.removeTodos(ids);
       if (!success) {
