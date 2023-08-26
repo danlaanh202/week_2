@@ -50,7 +50,7 @@ function MainPage() {
       if (!success) {
         throw new Error();
       }
-      setTodos((prev) => prev.map((item) => item.id !== id));
+      setTodos((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
       showToast("Error");
     }

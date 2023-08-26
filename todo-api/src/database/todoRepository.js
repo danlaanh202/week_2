@@ -42,9 +42,9 @@ export async function removeMultipletodos(ids) {
   if (!ids?.length) {
     throw new Error();
   }
-
+  const delay = (ms) => new Promise(() => setTimeout(() => {}, ms));
   const temptodos = [...todos].filter((item) => !ids.includes(item.id));
-  await delay(2000);
+
   saveTodo(temptodos);
   return temptodos;
 }
