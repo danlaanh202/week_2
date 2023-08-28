@@ -27,9 +27,8 @@ export async function getTodo(ctx) {
 }
 export async function getTodos(ctx) {
   try {
-    const todos = getAlltodos();
+    const todos = await getAlltodos();
     ctx.status = 200;
-
     return (ctx.body = {
       data: todos,
       success: true,
@@ -46,7 +45,7 @@ export async function getTodos(ctx) {
 
 export async function createTd(ctx) {
   try {
-    const data = createTodo(ctx.request.body);
+    const data = await createTodo(ctx.request.body);
     ctx.status = 201;
     return (ctx.body = {
       success: true,
@@ -64,7 +63,9 @@ export async function createTd(ctx) {
 export async function toggle(ctx) {
   try {
     const { id } = ctx.params;
-    toggleTodo(id);
+    if (id) await toggleTodo([id]);
+    const { ids } = ctx.request.body;
+    if (ids) await toggleTodo(ids);
     ctx.status = 200;
     return (ctx.body = {
       success: true,
@@ -79,23 +80,9 @@ export async function toggle(ctx) {
 export async function remove(ctx) {
   try {
     const { id } = ctx.params;
-    removeTodo(id);
-
-    return (ctx.body = {
-      success: true,
-    });
-  } catch (error) {
-    return (ctx.body = {
-      success: false,
-      error: error.message,
-    });
-  }
-}
-export async function toggleMultiple(ctx) {
-  try {
+    if (id) await removeTodo([id]);
     const { ids } = ctx.request.body;
-    completeMultipletodos(ids);
-    ctx.status = 200;
+    if (ids) await removeTodo(ids);
     return (ctx.body = {
       success: true,
     });
@@ -106,18 +93,33 @@ export async function toggleMultiple(ctx) {
     });
   }
 }
-export async function removeMultiple(ctx) {
-  try {
-    const { ids } = ctx.request.body;
-    await removeMultipletodos(ids);
-    ctx.status = 200;
-    return (ctx.body = {
-      success: true,
-    });
-  } catch (error) {
-    return (ctx.body = {
-      success: false,
-      error: error.message,
-    });
-  }
-}
+// export async function toggleMultiple(ctx) {
+//   try {
+//     const { ids } = ctx.request.body;
+//     await toggleTodo(ids);
+//     ctx.status = 200;
+//     return (ctx.body = {
+//       success: true,
+//     });
+//   } catch (error) {
+//     return (ctx.body = {
+//       success: false,
+//       error: error.message,
+//     });
+//   }
+// }
+// export async function removeMultiple(ctx) {
+//   try {
+//     const { ids } = ctx.request.body;
+//     await removeTodo(ids);
+//     ctx.status = 200;
+//     return (ctx.body = {
+//       success: true,
+//     });
+//   } catch (error) {
+//     return (ctx.body = {
+//       success: false,
+//       error: error.message,
+//     });
+//   }
+// }

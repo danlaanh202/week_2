@@ -1,16 +1,23 @@
-import { Card, EmptyState, Page, ResourceList, Stack } from "@shopify/polaris";
+import {
+  Card,
+  EmptyState,
+  Page,
+  ResourceItem,
+  ResourceList,
+} from "@shopify/polaris";
 import CreateTodoModal from "../components/modal/CreateTodoModal";
 import useToast from "../hooks/useToast";
 import useFetchApi from "../hooks/useFetchApi";
-import fetchData from "../helpers/utils/requestApi";
-import { useState } from "react";
-import TodoItem from "../components/todo/TodoItem";
-import TodoRequest from "../helpers/utils/TodoRequest";
 
-function MainPage() {
+import { useState } from "react";
+
+import TodoRequest from "../helpers/utils/TodoRequest";
+import TodoItem from "../components/todo/TodoItem";
+
+function TodoPage() {
   const { showToast } = useToast();
   const [selectedItems, setSelectedItems] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
+
   const {
     data: todos,
     setData: setTodos,
@@ -19,49 +26,32 @@ function MainPage() {
   } = useFetchApi("/todos");
 
   const createTodo = async (text) => {
-    try {
-      const { success, data } = await TodoRequest.createTodo(text);
-      setTodos((prev) => [data, ...prev]);
-      return { success };
-    } catch (error) {
-      throw new Error();
-    }
+    const { success, data } = await TodoRequest.createTodo(text);
+    setTodos((prev) => [data, ...prev]);
+    return { success };
   };
 
   const toggleTodo = async (id) => {
     if (isLoading) return;
-    setIsLoading(true);
-    try {
-      const { success } = await TodoRequest.toggleTodo(id);
-      if (!success) {
-        throw new Error();
-      }
-      setTodos((prev) =>
-        prev.map((item) =>
-          item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
-        )
-      );
-    } catch (error) {
-      showToast("Error");
-    } finally {
-      setIsLoading(false);
+    const { success } = await TodoRequest.toggleTodo(id);
+    if (!success) {
+      throw new Error();
     }
+    setTodos((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
+      )
+    );
   };
 
   const removeTodo = async (id) => {
     if (isLoading) return;
-    setIsLoading(true);
-    try {
-      const { success } = await TodoRequest.removeTodo(id);
-      if (!success) {
-        throw new Error();
-      }
-      setTodos((prev) => prev.filter((item) => item.id !== id));
-    } catch (error) {
-      showToast("Error");
-    } finally {
-      setIsLoading(false);
+
+    const { success } = await TodoRequest.removeTodo(id);
+    if (!success) {
+      throw new Error();
     }
+    setTodos((prev) => prev.filter((item) => item.id !== id));
   };
 
   const toggleTodos = async (ids) => {
@@ -139,19 +129,22 @@ function MainPage() {
             {
               content: "Toggle complete",
               onAction: () => toggleTodos(selectedItems),
+              disabled: isLoading,
             },
             {
               content: "Delete",
               onAction: () => removeTodos(selectedItems),
+              disabled: isLoading,
             },
           ]}
           renderItem={(item) => (
-            <TodoItem
-              todo={item}
-              toggleTodo={toggleTodo}
-              removeTodo={removeTodo}
-              isLoading={isLoading}
-            />
+            <ResourceItem id={item.id}>
+              <TodoItem
+                todo={item}
+                toggleTodo={toggleTodo}
+                removeTodo={removeTodo}
+              />
+            </ResourceItem>
           )}
           selectable
         />
@@ -159,4 +152,4 @@ function MainPage() {
     </Page>
   );
 }
-export default MainPage;
+export default TodoPage;

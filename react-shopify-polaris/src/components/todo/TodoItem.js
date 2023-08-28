@@ -6,51 +6,57 @@ import {
   Stack,
   TextStyle,
 } from "@shopify/polaris";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useToast from "../../hooks/useToast";
 
-const TodoItem = ({ todo, toggleTodo, removeTodo, isLoading }) => {
+const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
   const { showToast } = useToast();
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleClick = async (id, callback) => {
-    if (isLoading) return;
-
+    if (loading) return;
     try {
+      setLoading(true);
       await callback(id);
     } catch (error) {
       showToast("Error");
+    } finally {
+      setLoading(false);
     }
   };
 
+  useEffect(() => {
+    console.log(loading);
+  }, [loading]);
+
   return (
-    <ResourceItem id={todo.id}>
-      <Stack distribution="equalSpacing">
-        <TextStyle variant="bodyMd" fontWeight="bold" as="h3">
-          {todo.text}
-        </TextStyle>
+    <Stack distribution="equalSpacing">
+      <TextStyle variant="bodyMd" fontWeight="bold" as="h3">
+        {todo.text}
+      </TextStyle>
 
-        <ButtonGroup>
-          <Badge status={todo.isCompleted ? "success" : ""}>
-            {todo.isCompleted ? "Done" : "Pending"}
-          </Badge>
+      <Stack>
+        <Badge status={todo.isCompleted ? "success" : ""}>
+          {todo.isCompleted ? "Done" : "Pending"}
+        </Badge>
 
-          <Button
-            onClick={() => handleClick(todo.id, toggleTodo)}
-            primary={!todo.isCompleted}
-            fullWidth
-          >
-            {todo.isCompleted ? "Undo" : "Complete"}
-          </Button>
-          <Button
-            fullWidth
-            onClick={() => handleClick(todo.id, removeTodo)}
-            destructive
-          >
-            Delete
-          </Button>
-        </ButtonGroup>
+        <Button
+          onClick={() => handleClick(todo.id, toggleTodo)}
+          primary={!todo.isCompleted}
+          loading={loading}
+          // disabled={isLoading}
+        >
+          {todo.isCompleted ? "Undo" : "Complete"}
+        </Button>
+        <Button
+          onClick={() => handleClick(todo.id, removeTodo)}
+          destructive
+          loading={loading}
+          // disabled={isLoading}
+        >
+          Delete
+        </Button>
       </Stack>
-    </ResourceItem>
+    </Stack>
   );
 };
 

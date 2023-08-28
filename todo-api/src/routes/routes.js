@@ -14,7 +14,7 @@ router.get("/todo/:id", todoHandler.getTodo);
 router.post("/todo", todoInputMiddleware, todoHandler.createTd);
 router.delete("/todo/:id", todoHandler.remove);
 router.put("/todo/:id", todoHandler.toggle);
-router.put("/todos", todoHandler.toggleMultiple);
-router.delete("/todos", todoHandler.removeMultiple);
+router.put("/todos", todoHandler.toggle);
+router.delete("/todos", todoHandler.remove);
 
 export default router;
