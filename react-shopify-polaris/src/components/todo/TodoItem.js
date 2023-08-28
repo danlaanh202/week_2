@@ -1,12 +1,5 @@
-import {
-  Badge,
-  Button,
-  ButtonGroup,
-  ResourceItem,
-  Stack,
-  TextStyle,
-} from "@shopify/polaris";
-import React, { useEffect, useState } from "react";
+import { Badge, Button, Stack, TextStyle } from "@shopify/polaris";
+import React, { useState } from "react";
 import useToast from "../../hooks/useToast";
 
 const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
@@ -24,17 +17,13 @@ const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
     }
   };
 
-  useEffect(() => {
-    console.log(loading);
-  }, [loading]);
-
   return (
-    <Stack distribution="equalSpacing">
+    <Stack alignment="center" distribution="equalSpacing">
       <TextStyle variant="bodyMd" fontWeight="bold" as="h3">
         {todo.text}
       </TextStyle>
 
-      <Stack>
+      <Stack alignment="center">
         <Badge status={todo.isCompleted ? "success" : ""}>
           {todo.isCompleted ? "Done" : "Pending"}
         </Badge>
@@ -43,7 +32,6 @@ const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
           onClick={() => handleClick(todo.id, toggleTodo)}
           primary={!todo.isCompleted}
           loading={loading}
-          // disabled={isLoading}
         >
           {todo.isCompleted ? "Undo" : "Complete"}
         </Button>
@@ -51,7 +39,6 @@ const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
           onClick={() => handleClick(todo.id, removeTodo)}
           destructive
           loading={loading}
-          // disabled={isLoading}
         >
           Delete
         </Button>

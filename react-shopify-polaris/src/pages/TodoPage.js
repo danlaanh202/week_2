@@ -8,9 +8,7 @@ import {
 import CreateTodoModal from "../components/modal/CreateTodoModal";
 import useToast from "../hooks/useToast";
 import useFetchApi from "../hooks/useFetchApi";
-
 import { useState } from "react";
-
 import TodoRequest from "../helpers/utils/TodoRequest";
 import TodoItem from "../components/todo/TodoItem";
 

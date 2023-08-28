@@ -29,34 +29,35 @@ export async function createTodo(data) {
 }
 // const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 // await delay(2000);
-export async function toggleTodo(ids) {
+export async function toggleTodo(id) {
+  const tempTodos = todos.map((item) =>
+    item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
+  );
+  saveTodo(tempTodos);
+  return tempTodos;
+}
+
+export async function removeTodo(id) {
+  const tempTodos = todos.filter((item) => item.id !== id);
+  saveTodo(tempTodos);
+  return tempTodos;
+}
+
+export async function toggleMultipleTodos(ids) {
+  if (!ids?.length) {
+    throw new Error();
+  }
   const tempTodos = todos.map((item) =>
     ids.includes(item.id) ? { ...item, isCompleted: !item.isCompleted } : item
   );
   saveTodo(tempTodos);
   return tempTodos;
 }
-
-export async function removeTodo(ids) {
+export async function removeMultipletodos(ids) {
+  if (!ids?.length) {
+    throw new Error();
+  }
   const tempTodos = todos.filter((item) => !ids.includes(item.id));
   saveTodo(tempTodos);
   return tempTodos;
 }
-
-// export async function toggleMultipleTodos(ids) {
-//   if (!ids?.length) {
-//     throw new Error();
-//   }
-//   const temptodos = todos.map((item) =>
-//     ids.includes(item.id) ? { ...item, isCompleted: !item.isCompleted } : item
-//   );
-//   saveTodo(temptodos);
-// }
-// export async function removeMultipletodos(ids) {
-//   if (!ids?.length) {
-//     throw new Error();
-//   }
-//   const temptodos = todos.filter((item) => !ids.includes(item.id));
-//   saveTodo(temptodos);
-//   return temptodos;
-// }
