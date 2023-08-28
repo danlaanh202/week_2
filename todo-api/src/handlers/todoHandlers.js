@@ -63,7 +63,7 @@ export async function createTd(ctx) {
 
 export async function toggle(ctx) {
   try {
-    const { id } = ctx.request.params;
+    const { id } = ctx.params;
     toggleTodo(id);
     ctx.status = 200;
     return (ctx.body = {
@@ -78,8 +78,9 @@ export async function toggle(ctx) {
 }
 export async function remove(ctx) {
   try {
-    const { id } = ctx.request.params;
+    const { id } = ctx.params;
     removeTodo(id);
+
     return (ctx.body = {
       success: true,
     });

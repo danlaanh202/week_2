@@ -1,9 +1,8 @@
 import { AppProvider } from "@shopify/polaris";
 import React from "react";
 import AppLayout from "./layout/AppLayout";
-
 import { ToastProvider } from "./helpers/contexts/ToastContext";
-import MainPage from "./components/pages/MainPage";
+import TodoPage from "./pages/TodoPage";
 
 export default function App() {
   return (
@@ -33,7 +32,7 @@ export default function App() {
     >
       <ToastProvider>
         <AppLayout>
-          <MainPage />
+          <TodoPage />
         </AppLayout>
       </ToastProvider>
     </AppProvider>

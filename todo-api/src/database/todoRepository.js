@@ -31,10 +31,12 @@ export async function toggleTodo(id) {
   const tempTodos = todos.map((item) =>
     item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
   );
+  saveTodo(tempTodos);
   return tempTodos;
 }
 export async function removeTodo(id) {
   const tempTodos = todos.filter((item) => item.id !== id);
+  saveTodo(tempTodos);
   return tempTodos;
 }
 
@@ -42,7 +44,7 @@ export async function removeMultipletodos(ids) {
   if (!ids?.length) {
     throw new Error();
   }
-  const delay = (ms) => new Promise(() => setTimeout(() => {}, ms));
+
   const temptodos = [...todos].filter((item) => !ids.includes(item.id));
 
   saveTodo(temptodos);

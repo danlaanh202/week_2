@@ -1,20 +1,21 @@
 import { Card, EmptyState, Page, ResourceList, Stack } from "@shopify/polaris";
-import CreateTodoModal from "../modal/CreateTodoModal";
-import useToast from "../../hooks/useToast";
-import useFetchApi from "../../hooks/useFetchApi";
-import fetchData from "../../helpers/utils/requestApi";
+import CreateTodoModal from "../components/modal/CreateTodoModal";
+import useToast from "../hooks/useToast";
+import useFetchApi from "../hooks/useFetchApi";
+import fetchData from "../helpers/utils/requestApi";
 import { useState } from "react";
-import TodoItem from "../todo/TodoItem";
-import TodoRequest from "../../helpers/utils/TodoRequest";
+import TodoItem from "../components/todo/TodoItem";
+import TodoRequest from "../helpers/utils/TodoRequest";
 
 function MainPage() {
   const { showToast } = useToast();
   const [selectedItems, setSelectedItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const {
     data: todos,
     setData: setTodos,
-    loading: getLoading,
+    loading: isLoading,
+    setLoading: setIsLoading,
   } = useFetchApi("/todos");
 
   const createTodo = async (text) => {
@@ -28,6 +29,8 @@ function MainPage() {
   };
 
   const toggleTodo = async (id) => {
+    if (isLoading) return;
+    setIsLoading(true);
     try {
       const { success } = await TodoRequest.toggleTodo(id);
       if (!success) {
@@ -40,10 +43,14 @@ function MainPage() {
       );
     } catch (error) {
       showToast("Error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const removeTodo = async (id) => {
+    if (isLoading) return;
+    setIsLoading(true);
     try {
       const { success } = await TodoRequest.removeTodo(id);
       if (!success) {
@@ -52,6 +59,8 @@ function MainPage() {
       setTodos((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
       showToast("Error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -122,7 +131,7 @@ function MainPage() {
         <ResourceList
           resourceName={resourceName}
           items={todos}
-          loading={isLoading || getLoading}
+          loading={isLoading}
           selectedItems={selectedItems}
           onSelectionChange={setSelectedItems}
           emptyState={emptyStateMarkup}
@@ -130,12 +139,10 @@ function MainPage() {
             {
               content: "Toggle complete",
               onAction: () => toggleTodos(selectedItems),
-              disabled: isLoading,
             },
             {
               content: "Delete",
               onAction: () => removeTodos(selectedItems),
-              disabled: isLoading,
             },
           ]}
           renderItem={(item) => (
@@ -143,6 +150,7 @@ function MainPage() {
               todo={item}
               toggleTodo={toggleTodo}
               removeTodo={removeTodo}
+              isLoading={isLoading}
             />
           )}
           selectable
