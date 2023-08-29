@@ -9,6 +9,6 @@ function Topbar() {
     <TopBar showNavigationToggle={false} userMenu={userMenuMarkup} />
   );
 
-  return <div>{topBarMarkup}</div>;
+  return <>{topBarMarkup}</>;
 }
 export default Topbar;

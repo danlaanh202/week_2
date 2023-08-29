@@ -1,5 +1,5 @@
 import Topbar from "../components/Topbar";
-import ToastError from "../components/ui/ToastError";
+import ToastError from "../components/toast/ToastError";
 
 const AppLayout = ({ children }) => {
   return (

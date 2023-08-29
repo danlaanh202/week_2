@@ -11,11 +11,11 @@ import useFetchApi from "../hooks/useFetchApi";
 import { useState } from "react";
 import TodoRequest from "../helpers/utils/TodoRequest";
 import TodoItem from "../components/todo/TodoItem";
+import toggleTodosByIds from "../helpers/utils/toggleTodosByIds";
 
 function TodoPage() {
   const { showToast } = useToast();
   const [selectedItems, setSelectedItems] = useState([]);
-
   const {
     data: todos,
     setData: setTodos,
@@ -29,15 +29,15 @@ function TodoPage() {
     return { success };
   };
 
-  const toggleTodo = async (id) => {
+  const toggleTodo = async (todo) => {
     if (isLoading) return;
-    const { success } = await TodoRequest.toggleTodo(id);
+    const { success } = await TodoRequest.toggleTodo(todo);
     if (!success) {
       throw new Error();
     }
     setTodos((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
+        item.id === todo.id ? { ...item, isCompleted: !item.isCompleted } : item
       )
     );
   };
@@ -58,7 +58,9 @@ function TodoPage() {
     }
     setIsLoading(true);
     try {
-      const { success } = await TodoRequest.toggleTodos(ids);
+      const { success } = await TodoRequest.toggleTodos(
+        toggleTodosByIds(todos, ids)
+      );
       if (!success) {
         throw new Error("");
       }
@@ -112,7 +114,7 @@ function TodoPage() {
 
   return (
     <Page
-      title="todoes"
+      title="Todoes"
       primaryAction={<CreateTodoModal createTodo={createTodo} />}
     >
       <Card>

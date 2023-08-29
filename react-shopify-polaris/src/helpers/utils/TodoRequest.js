@@ -11,10 +11,11 @@ class TodoRequest {
       path: "/todo",
     });
   }
-  async toggleTodo(id) {
+  async toggleTodo(todo) {
     return await fetchData({
-      path: `/todo/${id}`,
+      path: `/todo/${todo.id}`,
       method: "PUT",
+      data: { todo: { ...todo, isCompleted: !todo.isCompleted } },
     });
   }
   async removeTodo(id) {
@@ -23,11 +24,11 @@ class TodoRequest {
       method: "DELETE",
     });
   }
-  async toggleTodos(ids) {
+  async toggleTodos(todos) {
     return await fetchData({
       path: "/todos",
       method: "PUT",
-      data: { ids },
+      data: { todos },
     });
   }
   async removeTodos(ids) {

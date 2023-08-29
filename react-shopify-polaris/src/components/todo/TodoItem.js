@@ -5,11 +5,11 @@ import useToast from "../../hooks/useToast";
 const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
-  const handleClick = async (id, callback) => {
+  const handleClick = async (param, callback) => {
     if (loading) return;
     try {
       setLoading(true);
-      await callback(id);
+      await callback(param);
     } catch (error) {
       showToast("Error");
     } finally {
@@ -22,14 +22,13 @@ const TodoItem = ({ todo, toggleTodo, removeTodo }) => {
       <TextStyle variant="bodyMd" fontWeight="bold" as="h3">
         {todo.text}
       </TextStyle>
-
       <Stack alignment="center">
         <Badge status={todo.isCompleted ? "success" : ""}>
           {todo.isCompleted ? "Done" : "Pending"}
         </Badge>
 
         <Button
-          onClick={() => handleClick(todo.id, toggleTodo)}
+          onClick={() => handleClick(todo, toggleTodo)}
           primary={!todo.isCompleted}
           loading={loading}
         >
