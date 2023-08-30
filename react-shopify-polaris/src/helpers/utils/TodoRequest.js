@@ -15,7 +15,7 @@ class TodoRequest {
     return await fetchData({
       path: `/todo/${todo.id}`,
       method: "PUT",
-      data: { todo: { ...todo, isCompleted: !todo.isCompleted } },
+      data: { todo: { isCompleted: !todo.isCompleted } },
     });
   }
   async removeTodo(id) {
